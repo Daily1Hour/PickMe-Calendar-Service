@@ -1,5 +1,7 @@
 package com.example.calendar.controller;
 
+import com.example.calendar.dto.InterviewScheduleDto;
+import com.example.calendar.dto.ResponseDto;
 import com.example.calendar.entity.Calendar;
 import com.example.calendar.service.CalendarService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,25 @@ public class CalendarController {
         String extractedToken = parts[1];   // 두 번째 요소가 실제 토큰
         log.info("Extracted token: " + extractedToken);
         return calendarService.interviewsList(extractedToken);
+    }
+
+    @PostMapping("/interviews")
+    public ResponseDto register_interview_schedule(@RequestParam InterviewScheduleDto interviewScheduleDto){
+        // 받아온 데이터를 DB에 저장 요청
+        boolean b = calendarService.register_interview_schedule(interviewScheduleDto);
+
+        // 저장 성공 시 OK 반환
+        if(b==true){
+
+            ResponseDto responseDto = new ResponseDto();
+            responseDto.setMessage("OK");
+            return responseDto;
+        }
+        // 저장 실패 시 Fail 반환
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setMessage("Fail");
+        return responseDto;
+
     }
 
 }
