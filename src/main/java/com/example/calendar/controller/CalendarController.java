@@ -36,7 +36,7 @@ public class CalendarController {
         boolean b = calendarService.register_interview_schedule(interviewScheduleDto, extractedToken);
 
         // 저장 성공 시 OK 반환
-        if(b==true){
+        if(b){
 
             ResponseDto responseDto = new ResponseDto();
             responseDto.setMessage("OK");
