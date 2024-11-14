@@ -28,9 +28,12 @@ public class CalendarController {
     }
 
     @PostMapping("/interviews")
-    public ResponseDto register_interview_schedule(@RequestParam InterviewScheduleDto interviewScheduleDto){
+    public ResponseDto register_interview_schedule(@RequestHeader("Authorization") String token, @RequestBody InterviewScheduleDto interviewScheduleDto){
+        String[] parts = token.split(" ");  // 공백 기준으로 나누기
+        String extractedToken = parts[1];   // 두 번째 요소가 실제 토큰
+
         // 받아온 데이터를 DB에 저장 요청
-        boolean b = calendarService.register_interview_schedule(interviewScheduleDto);
+        boolean b = calendarService.register_interview_schedule(interviewScheduleDto, extractedToken);
 
         // 저장 성공 시 OK 반환
         if(b==true){

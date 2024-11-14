@@ -18,10 +18,9 @@ public class CalendarService {
         return calendarRepository.findByUserInfo(userinfo);
     }
 
-    public boolean register_interview_schedule(InterviewScheduleDto interviewScheduleDto) {
+    public boolean register_interview_schedule(InterviewScheduleDto interviewScheduleDto, String token) {
         Calendar calendar = new Calendar();
-        calendar.setId(interviewScheduleDto.getId());
-        calendar.setUserInfo(interviewScheduleDto.getUserInfo());
+        calendar.setUserInfo(token);
         calendar.setLocation(interviewScheduleDto.getLocation());
         calendar.setCompanyName(interviewScheduleDto.getCompanyName());
         calendar.setPosition(interviewScheduleDto.getPosition());
