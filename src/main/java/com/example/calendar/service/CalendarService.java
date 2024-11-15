@@ -29,7 +29,7 @@ public class CalendarService {
         return true;
     }
 
-    public boolean delete_interview_schedule(Long id) {
+    public boolean delete_interview_schedule(String id) {
         calendarRepository.deleteById(id);
         return true;
     }

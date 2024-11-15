@@ -52,7 +52,7 @@ public class CalendarController {
 
     // 면접 일정 삭제
     @DeleteMapping("/interviews")
-    public ResponseDto delete_interview_schedule(@RequestHeader("Authorization") String token, @RequestParam Long id){
+    public ResponseDto delete_interview_schedule(@RequestHeader("Authorization") String token, @RequestParam String id){
         String[] parts = token.split(" ");
         String extractedToken = parts[1];
         boolean b = calendarService.delete_interview_schedule(id);
