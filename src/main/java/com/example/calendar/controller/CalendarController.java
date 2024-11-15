@@ -27,6 +27,7 @@ public class CalendarController {
         return calendarService.interviewsList(extractedToken);
     }
 
+    // 면접 일정 추가
     @PostMapping("/interviews")
     public ResponseDto register_interview_schedule(@RequestHeader("Authorization") String token, @RequestBody InterviewScheduleDto interviewScheduleDto){
         String[] parts = token.split(" ");  // 공백 기준으로 나누기
@@ -47,6 +48,23 @@ public class CalendarController {
         responseDto.setMessage("Fail");
         return responseDto;
 
+    }
+
+    // 면접 일정 삭제
+    @DeleteMapping("/interviews")
+    public ResponseDto delete_interview_schedule(@RequestHeader("Authorization") String token, @RequestParam Long id){
+        String[] parts = token.split(" ");
+        String extractedToken = parts[1];
+        boolean b = calendarService.delete_interview_schedule(id);
+
+        if(b){
+            ResponseDto responseDto = new ResponseDto();
+            responseDto.setMessage("OK");
+            return responseDto;
+        }
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setMessage("Fail");
+        return responseDto;
     }
 
 }

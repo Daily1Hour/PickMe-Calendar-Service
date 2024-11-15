@@ -28,4 +28,9 @@ public class CalendarService {
         calendarRepository.save(calendar);
         return true;
     }
+
+    public boolean delete_interview_schedule(Long id) {
+        calendarRepository.deleteById(id);
+        return true;
+    }
 }
