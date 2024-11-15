@@ -27,6 +27,16 @@ public class CalendarController {
         return calendarService.interviewsList(extractedToken);
     }
 
+    // 특정 직무 면접 일정 조회
+    @GetMapping("/interviews/byJob")
+    public List<Calendar> interviewsList_byJob(@RequestHeader("Authorization") String token, @RequestParam String position){
+        String[] parts = token.split(" ");  // 공백 기준으로 나누기
+        String extractedToken = parts[1];   // 두 번째 요소가 실제 토큰
+        log.info("Extracted token: " + extractedToken + "position : " + position);
+        return calendarService.interviewsList_byJob(extractedToken, position);
+    }
+
+
     // 면접 일정 추가
     @PostMapping("/interviews")
     public ResponseDto register_interview_schedule(@RequestHeader("Authorization") String token, @RequestBody InterviewScheduleDto interviewScheduleDto){

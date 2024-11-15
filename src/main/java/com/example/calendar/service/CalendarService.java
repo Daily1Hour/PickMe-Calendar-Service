@@ -56,4 +56,9 @@ public class CalendarService {
 
         return interviewScheduleDto1;
     }
+
+    public List<Calendar> interviewsList_byJob(String extractedToken, String position) {
+
+        return calendarRepository.findByUserInfoAndPosition(extractedToken, position);
+    }
 }
