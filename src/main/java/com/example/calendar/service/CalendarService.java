@@ -3,6 +3,7 @@ package com.example.calendar.service;
 import com.example.calendar.dto.InterviewScheduleDto;
 import com.example.calendar.entity.Calendar;
 import com.example.calendar.repository.CalendarRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +33,27 @@ public class CalendarService {
     public boolean delete_interview_schedule(String id) {
         calendarRepository.deleteById(id);
         return true;
+    }
+
+    public InterviewScheduleDto put_interview_schedule(String id, InterviewScheduleDto interviewScheduleDto) {
+
+        // calendarRepository.findById(id)로 반환된 Optional<Calendar>에서 값을 가져옴
+        // 값이 없으면 EntityNotFoundException을 던져 예외를 처리함
+        Calendar calendar = calendarRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Calendar not found with id: " + id));
+
+        calendar.setCompanyName(interviewScheduleDto.getCompanyName());
+        calendar.setLocation(interviewScheduleDto.getLocation());
+        calendar.setInterviewTime(interviewScheduleDto.getInterviewTime());
+        calendar.setPosition(interviewScheduleDto.getPosition());
+        calendarRepository.save(calendar);
+
+        InterviewScheduleDto interviewScheduleDto1 = new InterviewScheduleDto();
+        interviewScheduleDto1.setCompanyName(calendar.getCompanyName());
+        interviewScheduleDto1.setLocation(calendar.getLocation());
+        interviewScheduleDto1.setInterviewTime(calendar.getInterviewTime());
+        interviewScheduleDto1.setPosition(calendar.getPosition());
+
+        return interviewScheduleDto1;
     }
 }

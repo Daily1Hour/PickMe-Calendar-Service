@@ -67,4 +67,19 @@ public class CalendarController {
         return responseDto;
     }
 
+    // 특정 면접 일정 수정
+    @PutMapping("/interviews")
+    public InterviewScheduleDto put_interview_schedule(
+            @RequestHeader("Authorization") String token,
+            @RequestParam String id,
+            @RequestBody InterviewScheduleDto interviewScheduleDto){
+
+        String[] parts = token.split(" ");
+        String extractedToken = parts[1];
+
+        return calendarService.put_interview_schedule(id, interviewScheduleDto);
+
+
+    }
+
 }
