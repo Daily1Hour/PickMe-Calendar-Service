@@ -20,7 +20,7 @@ public class CalendarService {
         return calendarRepository.findByUserInfo(userinfo);
     }
 
-    public boolean register_interview_schedule(InterviewScheduleDto interviewScheduleDto, String token) {
+    public boolean registerInterviewSchedule(InterviewScheduleDto interviewScheduleDto, String token) {
         Calendar calendar = new Calendar();
         calendar.setUserInfo(token);
         calendar.setLocation(interviewScheduleDto.getLocation());
@@ -31,12 +31,12 @@ public class CalendarService {
         return true;
     }
 
-    public boolean delete_interview_schedule(String id) {
+    public boolean deleteInterviewSchedule(String id) {
         calendarRepository.deleteById(id);
         return true;
     }
 
-    public InterviewScheduleDto put_interview_schedule(String id, InterviewScheduleDto interviewScheduleDto) {
+    public InterviewScheduleDto putInterviewSchedule(String id, InterviewScheduleDto interviewScheduleDto) {
 
         // calendarRepository.findById(id)로 반환된 Optional<Calendar>에서 값을 가져옴
         // 값이 없으면 EntityNotFoundException을 던져 예외를 처리함
@@ -58,12 +58,12 @@ public class CalendarService {
         return interviewScheduleDto1;
     }
 
-    public List<Calendar> interviewsList_byJob(String extractedToken, String position) {
+    public List<Calendar> interviewsListByJob(String extractedToken, String position) {
 
         return calendarRepository.findByUserInfoAndPosition(extractedToken, position);
     }
 
-    public List<Calendar> interviewsList_byPeriod(String extractedToken, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<Calendar> interviewsListByPeriod(String extractedToken, LocalDateTime startDate, LocalDateTime endDate) {
         return calendarRepository.findByUserInfoAndInterviewTimeBetween(extractedToken, startDate, endDate);
     }
 }

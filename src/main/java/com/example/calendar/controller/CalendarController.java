@@ -30,31 +30,31 @@ public class CalendarController {
 
     // 특정 직무 면접 일정 조회
     @GetMapping("/interviews/byJob")
-    public List<Calendar> interviewsList_byJob(@RequestHeader("Authorization") String token, @RequestParam String position){
+    public List<Calendar> interviewsListByJob(@RequestHeader("Authorization") String token, @RequestParam String position){
         String[] parts = token.split(" ");  // 공백 기준으로 나누기
         String extractedToken = parts[1];   // 두 번째 요소가 실제 토큰
         log.info("Extracted token: " + extractedToken + " " + "position : " + position);
-        return calendarService.interviewsList_byJob(extractedToken, position);
+        return calendarService.interviewsListByJob(extractedToken, position);
     }
 
     // 특정 기간 내 일정 조회
     @GetMapping("/interviews/byPeriod")
-    public List<Calendar> interviewsList_byPeriod(@RequestHeader("Authorization") String token, @RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate){
+    public List<Calendar> interviewsListByPeriod(@RequestHeader("Authorization") String token, @RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate){
         String[] parts = token.split(" ");
         String extractedToken = parts[1];
         log.info("Extracted token: " + extractedToken + " " + "startDate : " + startDate + " " + "endDate : " + endDate);
-        return calendarService.interviewsList_byPeriod(extractedToken, startDate, endDate);
+        return calendarService.interviewsListByPeriod(extractedToken, startDate, endDate);
     }
 
 
     // 면접 일정 추가
     @PostMapping("/interviews")
-    public ResponseDto register_interview_schedule(@RequestHeader("Authorization") String token, @RequestBody InterviewScheduleDto interviewScheduleDto){
+    public ResponseDto registerInterviewSchedule(@RequestHeader("Authorization") String token, @RequestBody InterviewScheduleDto interviewScheduleDto){
         String[] parts = token.split(" ");  // 공백 기준으로 나누기
         String extractedToken = parts[1];   // 두 번째 요소가 실제 토큰
 
         // 받아온 데이터를 DB에 저장 요청
-        boolean b = calendarService.register_interview_schedule(interviewScheduleDto, extractedToken);
+        boolean b = calendarService.registerInterviewSchedule(interviewScheduleDto, extractedToken);
 
         // 저장 성공 시 OK 반환
         if(b){
@@ -72,10 +72,10 @@ public class CalendarController {
 
     // 면접 일정 삭제
     @DeleteMapping("/interviews")
-    public ResponseDto delete_interview_schedule(@RequestHeader("Authorization") String token, @RequestParam String id){
+    public ResponseDto deleteInterviewSchedule(@RequestHeader("Authorization") String token, @RequestParam String id){
         String[] parts = token.split(" ");
         String extractedToken = parts[1];
-        boolean b = calendarService.delete_interview_schedule(id);
+        boolean b = calendarService.deleteInterviewSchedule(id);
 
         if(b){
             ResponseDto responseDto = new ResponseDto();
@@ -89,7 +89,7 @@ public class CalendarController {
 
     // 특정 면접 일정 수정
     @PutMapping("/interviews")
-    public InterviewScheduleDto put_interview_schedule(
+    public InterviewScheduleDto putInterviewSchedule(
             @RequestHeader("Authorization") String token,
             @RequestParam String id,
             @RequestBody InterviewScheduleDto interviewScheduleDto){
@@ -97,7 +97,7 @@ public class CalendarController {
         String[] parts = token.split(" ");
         String extractedToken = parts[1];
 
-        return calendarService.put_interview_schedule(id, interviewScheduleDto);
+        return calendarService.putInterviewSchedule(id, interviewScheduleDto);
 
 
     }
