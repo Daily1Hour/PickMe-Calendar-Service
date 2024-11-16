@@ -2,6 +2,7 @@ package com.example.calendar.service;
 
 import com.example.calendar.dto.InterviewScheduleDto;
 import com.example.calendar.entity.Calendar;
+import com.example.calendar.mapper.CalendarMapper;
 import com.example.calendar.repository.CalendarRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CalendarService {
     private final CalendarRepository calendarRepository;
+    private final CalendarMapper calendarMapper;
 
     // 해당 사용자의 면접 일정 전체 조회 레포지토리에 요청
     public List<Calendar> interviewsList(String userinfo){
@@ -23,10 +25,7 @@ public class CalendarService {
     public boolean registerInterviewSchedule(InterviewScheduleDto interviewScheduleDto, String token) {
         Calendar calendar = new Calendar();
         calendar.setUserInfo(token);
-        calendar.setLocation(interviewScheduleDto.getLocation());
-        calendar.setCompanyName(interviewScheduleDto.getCompanyName());
-        calendar.setPosition(interviewScheduleDto.getPosition());
-        calendar.setInterviewTime(interviewScheduleDto.getInterviewTime());
+        calendarMapper.toCalendarEntity(interviewScheduleDto, calendar);
         calendarRepository.save(calendar);
         return true;
     }
@@ -43,19 +42,9 @@ public class CalendarService {
         Calendar calendar = calendarRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Calendar not found with id: " + id));
 
-        calendar.setCompanyName(interviewScheduleDto.getCompanyName());
-        calendar.setLocation(interviewScheduleDto.getLocation());
-        calendar.setInterviewTime(interviewScheduleDto.getInterviewTime());
-        calendar.setPosition(interviewScheduleDto.getPosition());
+        calendarMapper.toCalendarEntity(interviewScheduleDto, calendar);
         calendarRepository.save(calendar);
-
-        InterviewScheduleDto interviewScheduleDto1 = new InterviewScheduleDto();
-        interviewScheduleDto1.setCompanyName(calendar.getCompanyName());
-        interviewScheduleDto1.setLocation(calendar.getLocation());
-        interviewScheduleDto1.setInterviewTime(calendar.getInterviewTime());
-        interviewScheduleDto1.setPosition(calendar.getPosition());
-
-        return interviewScheduleDto1;
+        return calendarMapper.toInterviewScheduleDto(calendar);
     }
 
     public List<Calendar> interviewsListByJob(String extractedToken, String position) {
