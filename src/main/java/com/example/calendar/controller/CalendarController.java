@@ -22,8 +22,7 @@ public class CalendarController {
     // 해당 사용자 면접 일정 전체 조회
     @GetMapping("/interviews")
     public List<Calendar> interviewsList(@RequestHeader("Authorization") String token){
-        String[] parts = token.split(" ");  // 공백 기준으로 나누기
-        String extractedToken = parts[1];   // 두 번째 요소가 실제 토큰
+        String extractedToken = extractToken(token);
         log.info("Extracted token: " + extractedToken);
         return calendarService.interviewsList(extractedToken);
     }
@@ -31,8 +30,7 @@ public class CalendarController {
     // 특정 직무 면접 일정 조회
     @GetMapping("/interviews/byJob")
     public List<Calendar> interviewsListByJob(@RequestHeader("Authorization") String token, @RequestParam String position){
-        String[] parts = token.split(" ");  // 공백 기준으로 나누기
-        String extractedToken = parts[1];   // 두 번째 요소가 실제 토큰
+        String extractedToken = extractToken(token);
         log.info("Extracted token: " + extractedToken + " " + "position : " + position);
         return calendarService.interviewsListByJob(extractedToken, position);
     }
@@ -40,8 +38,7 @@ public class CalendarController {
     // 특정 기간 내 일정 조회
     @GetMapping("/interviews/byPeriod")
     public List<Calendar> interviewsListByPeriod(@RequestHeader("Authorization") String token, @RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate){
-        String[] parts = token.split(" ");
-        String extractedToken = parts[1];
+        String extractedToken = extractToken(token);
         log.info("Extracted token: " + extractedToken + " " + "startDate : " + startDate + " " + "endDate : " + endDate);
         return calendarService.interviewsListByPeriod(extractedToken, startDate, endDate);
     }
@@ -50,8 +47,7 @@ public class CalendarController {
     // 면접 일정 추가
     @PostMapping("/interviews")
     public ResponseDto registerInterviewSchedule(@RequestHeader("Authorization") String token, @RequestBody InterviewScheduleDto interviewScheduleDto){
-        String[] parts = token.split(" ");  // 공백 기준으로 나누기
-        String extractedToken = parts[1];   // 두 번째 요소가 실제 토큰
+        String extractedToken = extractToken(token);
 
         // 받아온 데이터를 DB에 저장 요청
         boolean b = calendarService.registerInterviewSchedule(interviewScheduleDto, extractedToken);
@@ -73,8 +69,7 @@ public class CalendarController {
     // 면접 일정 삭제
     @DeleteMapping("/interviews")
     public ResponseDto deleteInterviewSchedule(@RequestHeader("Authorization") String token, @RequestParam String id){
-        String[] parts = token.split(" ");
-        String extractedToken = parts[1];
+        String extractedToken = extractToken(token);
         boolean b = calendarService.deleteInterviewSchedule(id);
 
         if(b){
@@ -94,12 +89,17 @@ public class CalendarController {
             @RequestParam String id,
             @RequestBody InterviewScheduleDto interviewScheduleDto){
 
-        String[] parts = token.split(" ");
-        String extractedToken = parts[1];
+        String extractedToken = extractToken(token);
 
         return calendarService.putInterviewSchedule(id, interviewScheduleDto);
 
 
+    }
+
+    // JWT토큰 처리하는 로직
+    public String extractToken(String token){
+        String[] parts = token.split(" ");
+        return parts[1];
     }
 
 }
