@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -32,8 +33,17 @@ public class CalendarController {
     public List<Calendar> interviewsList_byJob(@RequestHeader("Authorization") String token, @RequestParam String position){
         String[] parts = token.split(" ");  // 공백 기준으로 나누기
         String extractedToken = parts[1];   // 두 번째 요소가 실제 토큰
-        log.info("Extracted token: " + extractedToken + "position : " + position);
+        log.info("Extracted token: " + extractedToken + " " + "position : " + position);
         return calendarService.interviewsList_byJob(extractedToken, position);
+    }
+
+    // 특정 기간 내 일정 조회
+    @GetMapping("/interviews/byPeriod")
+    public List<Calendar> interviewsList_byPeriod(@RequestHeader("Authorization") String token, @RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate){
+        String[] parts = token.split(" ");
+        String extractedToken = parts[1];
+        log.info("Extracted token: " + extractedToken + " " + "startDate : " + startDate + " " + "endDate : " + endDate);
+        return calendarService.interviewsList_byPeriod(extractedToken, startDate, endDate);
     }
 
 

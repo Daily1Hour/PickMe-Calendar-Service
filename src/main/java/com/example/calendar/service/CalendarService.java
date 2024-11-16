@@ -7,6 +7,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -60,5 +61,9 @@ public class CalendarService {
     public List<Calendar> interviewsList_byJob(String extractedToken, String position) {
 
         return calendarRepository.findByUserInfoAndPosition(extractedToken, position);
+    }
+
+    public List<Calendar> interviewsList_byPeriod(String extractedToken, LocalDateTime startDate, LocalDateTime endDate) {
+        return calendarRepository.findByUserInfoAndInterviewTimeBetween(extractedToken, startDate, endDate);
     }
 }
