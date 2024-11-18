@@ -1,0 +1,200 @@
+openapi: 3.0.1
+info:
+  title: PickMe-Calendar
+  version: v1
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+security:
+- BearerAuth: []
+paths:
+  /calendar/interviews:
+    get:
+      tags:
+      - calendar-controller
+      operationId: interviewsList
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Calendar"
+    put:
+      tags:
+      - calendar-controller
+      operationId: putInterviewSchedule
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InterviewScheduleDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/InterviewScheduleDto"
+    post:
+      tags:
+      - calendar-controller
+      operationId: registerInterviewSchedule
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InterviewScheduleDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+    delete:
+      tags:
+      - calendar-controller
+      operationId: deleteInterviewSchedule
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseDto"
+  /calendar/interviews/byPeriod:
+    get:
+      tags:
+      - calendar-controller
+      operationId: interviewsListByPeriod
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: startDate
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: endDate
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Calendar"
+  /calendar/interviews/byJob:
+    get:
+      tags:
+      - calendar-controller
+      operationId: interviewsListByJob
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: position
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Calendar"
+components:
+  schemas:
+    InterviewScheduleDto:
+      type: object
+      properties:
+        location:
+          type: string
+        companyName:
+          type: string
+        interviewTime:
+          type: string
+          format: date-time
+        position:
+          type: string
+    ResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+    Calendar:
+      type: object
+      properties:
+        id:
+          type: string
+        userInfo:
+          type: string
+        location:
+          type: string
+        companyName:
+          type: string
+        interviewTime:
+          type: string
+          format: date-time
+        position:
+          type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
