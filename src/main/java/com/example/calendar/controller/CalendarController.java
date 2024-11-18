@@ -58,39 +58,7 @@ public class CalendarController {
         log.warn("알 수 없는 조건으로 요청되었습니다.");
         return Collections.emptyList();
 
-
-
-        //return calendarService.interviewsList(extractedToken);
     }
-
-
-    /*
-    // 해당 사용자 면접 일정 전체 조회
-    @GetMapping("/interviews")
-    public List<Calendar> interviewsList(@RequestHeader("Authorization") String token){
-        String extractedToken = ExtractToken.extractToken(token);
-        log.info("Extracted token: " + extractedToken);
-        return calendarService.interviewsList(extractedToken);
-    }
-
-    // 특정 직무 면접 일정 조회
-    @GetMapping("/interviews/byJob")
-    public List<Calendar> interviewsListByJob(@RequestHeader("Authorization") String token, @RequestParam String position){
-        String extractedToken = ExtractToken.extractToken(token);
-        log.info("Extracted token: " + extractedToken + " " + "position : " + position);
-        return calendarService.interviewsListByJob(extractedToken, position);
-    }
-
-    // 특정 기간 내 일정 조회
-    @GetMapping("/interviews/byPeriod")
-    public List<Calendar> interviewsListByPeriod(@RequestHeader("Authorization") String token, @RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate){
-        String extractedToken = ExtractToken.extractToken(token);
-        log.info("Extracted token: " + extractedToken + " " + "startDate : " + startDate + " " + "endDate : " + endDate);
-        return calendarService.interviewsListByPeriod(extractedToken, startDate, endDate);
-    }
-
-     */
-
 
     // 면접 일정 추가
     @PostMapping("/interviews")
