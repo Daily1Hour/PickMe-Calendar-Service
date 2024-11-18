@@ -22,6 +22,7 @@ public class CalendarService {
         return calendarRepository.findByUserInfo(userinfo);
     }
 
+    // 사용자의 면접 일정 추가
     public boolean registerInterviewSchedule(InterviewScheduleDto interviewScheduleDto, String token) {
         Calendar calendar = new Calendar();
         calendar.setUserInfo(token);
@@ -30,11 +31,13 @@ public class CalendarService {
         return true;
     }
 
+    // 사용자의 면접 일정 삭제
     public boolean deleteInterviewSchedule(String id) {
         calendarRepository.deleteById(id);
         return true;
     }
 
+    // 사용자의 면접 일정 수정
     public InterviewScheduleDto putInterviewSchedule(String id, InterviewScheduleDto interviewScheduleDto) {
 
         // calendarRepository.findById(id)로 반환된 Optional<Calendar>에서 값을 가져옴
@@ -47,12 +50,19 @@ public class CalendarService {
         return calendarMapper.toInterviewScheduleDto(calendar);
     }
 
+    // 사용자의 특정 직무 면접 일정 조회
     public List<Calendar> interviewsListByJob(String extractedToken, String position) {
 
         return calendarRepository.findByUserInfoAndPosition(extractedToken, position);
     }
 
+    // 사용자의 특정 기간 면접 일정 조회
     public List<Calendar> interviewsListByPeriod(String extractedToken, LocalDateTime startDate, LocalDateTime endDate) {
         return calendarRepository.findByUserInfoAndInterviewTimeBetween(extractedToken, startDate, endDate);
+    }
+
+    // 사용자의 특정 직무의 특정 기간 내의 면접 일정 조회
+    public List<Calendar> InterviewsByPositionAndDate(String extractedToken, String position, LocalDateTime startDate, LocalDateTime endDate) {
+        return calendarRepository.findByUserInfoAndPositionAndInterviewTimeBetween(extractedToken, position, startDate, endDate);
     }
 }

@@ -18,4 +18,6 @@ public interface CalendarRepository extends MongoRepository<Calendar, String> {
 
     // 해당 사용자의 특정 기간 내 면접 일정 조회
     List<Calendar> findByUserInfoAndInterviewTimeBetween(String userInfo, LocalDateTime startDate, LocalDateTime endDate);
+
+    List<Calendar> findByUserInfoAndPositionAndInterviewTimeBetween(String userInfo, String position, LocalDateTime startDate, LocalDateTime endDate);
 }
