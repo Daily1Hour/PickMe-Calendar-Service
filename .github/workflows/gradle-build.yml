@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write # 레포지토리 콘텐츠에 대한 쓰기 권한
+  actions: read # 액션에 대한 읽기 권한
+  pull-requests: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
