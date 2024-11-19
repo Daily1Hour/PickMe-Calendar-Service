@@ -37,26 +37,7 @@ public class CalendarController {
         log.info("startDate: " + startDate);
         log.info("endDate: " + endDate);
 
-        // 조건 처리
-        if (position == null && startDate == null && endDate == null) {
-            log.info("직무와 날짜가 모두 입력되지 않았습니다.");
-            // 기본 전체 데이터를 반환하거나 예외 처리
-            return ResponseEntity.status(HttpStatus.OK).body(calendarService.interviewsList(extractedToken));
-        } else if (position != null && startDate == null && endDate == null) {
-            log.info("직무만 입력되었습니다: " + position);
-            // 직무에 해당하는 인터뷰 데이터를 반환
-            return ResponseEntity.status(HttpStatus.OK).body(calendarService.interviewsListByJob(extractedToken, position));
-        } else if (position == null && (startDate != null || endDate != null)) {
-            log.info("날짜만 입력되었습니다: " + startDate + " ~ " + endDate);
-            // 날짜 범위에 해당하는 인터뷰 데이터를 반환
-            return ResponseEntity.status(HttpStatus.OK).body(calendarService.interviewsListByPeriod(extractedToken, startDate, endDate));
-        } else if (position != null && (startDate != null || endDate != null)) {
-            log.info("직무와 날짜가 모두 입력되었습니다. 직무: " + position + ", 날짜: " + startDate + " ~ " + endDate);
-            // 직무와 날짜 조건을 모두 만족하는 인터뷰 데이터를 반환
-            return ResponseEntity.status(HttpStatus.OK).body(calendarService.InterviewsByPositionAndDate(extractedToken, position, startDate, endDate));
-        }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Fail");
+        return calendarService.interviewsList(extractedToken, position, startDate, endDate);
     }
 
     // 면접 일정 추가
