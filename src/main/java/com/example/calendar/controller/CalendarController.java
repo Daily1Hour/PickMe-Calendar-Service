@@ -1,8 +1,6 @@
 package com.example.calendar.controller;
 
 import com.example.calendar.dto.InterviewScheduleDto;
-import com.example.calendar.dto.ResponseDto;
-import com.example.calendar.entity.Calendar;
 import com.example.calendar.extract.ExtractToken;
 import com.example.calendar.service.CalendarService;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
 
 @RestController
 @RequestMapping("/calendar")
