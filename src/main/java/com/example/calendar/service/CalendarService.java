@@ -4,7 +4,6 @@ import com.example.calendar.dto.InterviewScheduleDto;
 import com.example.calendar.entity.Calendar;
 import com.example.calendar.mapper.CalendarMapper;
 import com.example.calendar.repository.CalendarRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -55,22 +53,20 @@ public class CalendarService {
     }
 
     // 사용자의 면접 일정 삭제
-    public boolean deleteInterviewSchedule(String id) {
-        calendarRepository.deleteById(id);
+    public boolean deleteInterviewSchedule(String userInfo, String id) {
+        calendarRepository.deleteByUserInfoAndId(userInfo, id);
         return true;
     }
 
     // 사용자의 면접 일정 수정
-    public InterviewScheduleDto putInterviewSchedule(String id, InterviewScheduleDto interviewScheduleDto) {
+    public ResponseEntity<?> putInterviewSchedule(String userInfo, String id, InterviewScheduleDto interviewScheduleDto) {
 
-        // calendarRepository.findById(id)로 반환된 Optional<Calendar>에서 값을 가져옴
-        // 값이 없으면 EntityNotFoundException을 던져 예외를 처리함
-        Calendar calendar = calendarRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Calendar not found with id: " + id));
+        // calendarRepository.findByUserInfoAndId(userInfo, id)로 반환된 해당 일정을 가져옴
+        Calendar calendar = calendarRepository.findByUserInfoAndId(userInfo, id);
 
         calendarMapper.toCalendarEntity(interviewScheduleDto, calendar);
         calendarRepository.save(calendar);
-        return calendarMapper.toInterviewScheduleDto(calendar);
+        return ResponseEntity.status(HttpStatus.OK).body(calendarMapper.toInterviewScheduleDto(calendar));
     }
 
 }

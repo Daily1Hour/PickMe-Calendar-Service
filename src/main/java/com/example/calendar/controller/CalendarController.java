@@ -57,7 +57,7 @@ public class CalendarController {
     @DeleteMapping("/interviews")
     public ResponseEntity<?> deleteInterviewSchedule(@RequestHeader("Authorization") String token, @RequestParam String id){
         String extractedToken = ExtractToken.extractToken(token);
-        boolean b = calendarService.deleteInterviewSchedule(id);
+        boolean b = calendarService.deleteInterviewSchedule(extractedToken, id);
 
         if(b){
 
@@ -76,11 +76,7 @@ public class CalendarController {
 
         String extractedToken = ExtractToken.extractToken(token);
 
-        InterviewScheduleDto ResponseDto = calendarService.putInterviewSchedule(id, interviewScheduleDto);
-
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseDto);
-
-
+        return calendarService.putInterviewSchedule(extractedToken, id, interviewScheduleDto);
     }
 
 }
