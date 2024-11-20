@@ -28,7 +28,6 @@ public class CalendarService {
         Optional<List<Calendar>> optionalCalendarList = Optional.ofNullable(calendarRepository.findByUserInfo(userInfo));
         log.info(optionalCalendarList.get().toString());
         if(optionalCalendarList.get().isEmpty()){
-            log.info("비었습니다.");
             throw new CustomException(ErrorCode.NULL_USERINFO, userInfo + "님의 면접 일정은 없습니다.");
         }
 
