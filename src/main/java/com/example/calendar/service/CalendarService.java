@@ -26,7 +26,6 @@ public class CalendarService {
     // 해당 사용자의 면접 일정 전체 조회 레포지토리에 요청
     public ResponseEntity<?> interviewsList(String userInfo, String position, LocalDateTime startDate, LocalDateTime endDate){
         Optional<List<Calendar>> optionalCalendarList = Optional.ofNullable(calendarRepository.findByUserInfo(userInfo));
-        log.info(optionalCalendarList.get().toString());
         if(optionalCalendarList.get().isEmpty()){
             throw new CustomException(ErrorCode.NULL_USERINFO, userInfo + "님의 면접 일정은 없습니다.");
         }

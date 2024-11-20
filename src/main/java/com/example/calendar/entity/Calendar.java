@@ -25,4 +25,6 @@ public class Calendar {
 
     private String position;
 
+    // 설명칸, 면접 유형 추가
+
 }

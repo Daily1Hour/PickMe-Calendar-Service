@@ -12,6 +12,6 @@ public enum ErrorCode {
     DOCUMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 ID에 면접 일정이 없습니다."),
     NOT_Bearer(HttpStatus.BAD_REQUEST, "Bearer 토큰 방식이 아닙니다.");
 
-    private HttpStatus httpStatus;
-    private String message;
+    private final HttpStatus httpStatus;
+    private final String message;
 }
