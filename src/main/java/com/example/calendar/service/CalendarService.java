@@ -2,6 +2,8 @@ package com.example.calendar.service;
 
 import com.example.calendar.dto.InterviewScheduleDto;
 import com.example.calendar.entity.Calendar;
+import com.example.calendar.exception.CustomException;
+import com.example.calendar.exception.ErrorCode;
 import com.example.calendar.mapper.CalendarMapper;
 import com.example.calendar.repository.CalendarRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,8 +25,14 @@ public class CalendarService {
 
     // 해당 사용자의 면접 일정 전체 조회 레포지토리에 요청
     public ResponseEntity<?> interviewsList(String userInfo, String position, LocalDateTime startDate, LocalDateTime endDate){
-        List<Calendar> calendarList;
+        Optional<List<Calendar>> optionalCalendarList = Optional.ofNullable(calendarRepository.findByUserInfo(userInfo));
+        log.info(optionalCalendarList.get().toString());
+        if(optionalCalendarList.get().isEmpty()){
+            log.info("비었습니다.");
+            throw new CustomException(ErrorCode.NULL_USERINFO, userInfo + "님의 면접 일정은 없습니다.");
+        }
 
+        List<Calendar> calendarList;
         // 조건 처리
         if (position == null && startDate == null && endDate == null) { // 면접 일정 전체 조회
             // 기본 전체 데이터를 반환하거나 예외 처리
@@ -54,12 +63,20 @@ public class CalendarService {
 
     // 사용자의 면접 일정 삭제
     public boolean deleteInterviewSchedule(String userInfo, String id) {
+        Optional<Calendar> optionalCalendar = Optional.ofNullable(calendarRepository.findByUserInfoAndId(userInfo, id));
+        if(optionalCalendar.isEmpty()){
+            throw new CustomException(ErrorCode.DOCUMENT_NOT_FOUND, String.format("%s 님의 %s id에 해당하는 면접 일정은 없습니다.", userInfo,id));
+        }
         calendarRepository.deleteByUserInfoAndId(userInfo, id);
         return true;
     }
 
     // 사용자의 면접 일정 수정
     public ResponseEntity<?> putInterviewSchedule(String userInfo, String id, InterviewScheduleDto interviewScheduleDto) {
+        Optional<Calendar> optionalCalendar = Optional.ofNullable(calendarRepository.findByUserInfoAndId(userInfo, id));
+        if(optionalCalendar.isEmpty()){
+            throw new CustomException(ErrorCode.DOCUMENT_NOT_FOUND, String.format("%s 님의 %s id에 해당하는 면접 일정은 없습니다.", userInfo,id));
+        }
 
         // calendarRepository.findByUserInfoAndId(userInfo, id)로 반환된 해당 일정을 가져옴
         Calendar calendar = calendarRepository.findByUserInfoAndId(userInfo, id);
