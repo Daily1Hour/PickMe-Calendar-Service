@@ -6,6 +6,7 @@ import com.example.calendar.exception.CustomException;
 import com.example.calendar.exception.ErrorCode;
 import com.example.calendar.mapper.CalendarMapper;
 import com.example.calendar.repository.CalendarRepository;
+import com.example.calendar.repository.CalendarMongoQueryProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,31 +23,17 @@ import java.util.Optional;
 public class CalendarService {
     private final CalendarRepository calendarRepository;
     private final CalendarMapper calendarMapper;
+    private final CalendarMongoQueryProcessor calendarMongoQueryProcessor;
 
     // 해당 사용자의 면접 일정 전체 조회 레포지토리에 요청
     public ResponseEntity<?> interviewsList(String userInfo, String position, LocalDateTime startDate, LocalDateTime endDate){
-        Optional<List<Calendar>> optionalCalendarList = Optional.ofNullable(calendarRepository.findByUserInfo(userInfo));
-        if(optionalCalendarList.get().isEmpty()){
-            throw new CustomException(ErrorCode.NULL_USERINFO, userInfo + "님의 면접 일정은 없습니다.");
+
+        List<Calendar> calendarList = calendarMongoQueryProcessor.findInterviewsByCriteria(userInfo, position, startDate, endDate);
+
+        if(calendarList.isEmpty()){
+            throw new CustomException(ErrorCode.NULL_USERINFO, "해당 조건에 대한 사용자의 면접 일정은 없습니다.");
         }
 
-        List<Calendar> calendarList;
-        // 조건 처리
-        if (position == null && startDate == null && endDate == null) { // 면접 일정 전체 조회
-            // 기본 전체 데이터를 반환하거나 예외 처리
-            calendarList = calendarRepository.findByUserInfo(userInfo);
-        } else if (position != null && startDate == null && endDate == null) { // 직무별 면접 일정 조회
-            // 직무에 해당하는 인터뷰 데이터를 반환
-            calendarList = calendarRepository.findByUserInfoAndPosition(userInfo, position);
-        } else if (position == null && (startDate != null && endDate != null)) { // 특정 기간 내 면접 일정 조회
-            // 날짜 범위에 해당하는 인터뷰 데이터를 반환
-            calendarList = calendarRepository.findByUserInfoAndInterviewTimeBetween(userInfo, startDate, endDate);
-        } else if (position != null && (startDate != null && endDate != null)) { // 특정 직무의 특정 기간 내 면접 일정 조회
-            // 직무와 날짜 조건을 모두 만족하는 인터뷰 데이터를 반환
-            calendarList = calendarRepository.findByUserInfoAndPositionAndInterviewTimeBetween(userInfo, position, startDate, endDate);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("날짜 입력값이 잘못되었습니다. startDate와 endDate는 둘 다 입력되어야 합니다.");
-        }
         return ResponseEntity.status(HttpStatus.OK).body(calendarMapper.toGetInterviewListDto(calendarList));
     }
 
