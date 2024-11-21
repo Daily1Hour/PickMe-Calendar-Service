@@ -4,7 +4,7 @@ import com.example.calendar.dto.InterviewScheduleDto;
 import com.example.calendar.entity.Calendar;
 import com.example.calendar.exception.CustomException;
 import com.example.calendar.exception.ErrorCode;
-import com.example.calendar.mapper.CalendarMapper;
+import com.example.calendar.service.mapper.CalendarMapper;
 import com.example.calendar.repository.CalendarRepository;
 import com.example.calendar.repository.CalendarMongoQueryProcessor;
 import lombok.RequiredArgsConstructor;

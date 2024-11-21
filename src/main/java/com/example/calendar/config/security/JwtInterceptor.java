@@ -1,4 +1,4 @@
-package com.example.calendar.security;
+package com.example.calendar.config.security;
 
 import com.example.calendar.service.JwtService;
 import jakarta.servlet.http.HttpServletRequest;

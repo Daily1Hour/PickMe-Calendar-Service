@@ -1,4 +1,4 @@
-package com.example.calendar.mapper;
+package com.example.calendar.service.mapper;
 
 import com.example.calendar.dto.GetInterviewListDto;
 import com.example.calendar.dto.InterviewScheduleDto;

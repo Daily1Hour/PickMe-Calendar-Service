@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class ExceptionController {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
-    public ResponseEntity<?> customException(CustomException e){
+    public ResponseEntity<?> handleCustomException(CustomException e){
         return ResponseEntity.status(e.getErrorCode().getHttpStatus()).body(e.getErrorCode().name() + ": " + e.getMessage());
     }
 }
