@@ -1,6 +1,6 @@
 package com.example.calendar.config;
 
-import com.example.calendar.extract.JwtInterceptor;
+import com.example.calendar.security.JwtInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

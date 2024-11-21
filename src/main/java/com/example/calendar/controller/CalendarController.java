@@ -38,7 +38,7 @@ public class CalendarController {
 
     // 면접 일정 추가
     @PostMapping("/interviews")
-    public ResponseEntity<?> registerInterviewSchedule(HttpServletRequest request,
+    public ResponseEntity<?> createInterviewSchedule(HttpServletRequest request,
                                                        @RequestBody InterviewScheduleDto interviewScheduleDto){
 
         String extractedToken = (String) request.getAttribute("userInfo");
