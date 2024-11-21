@@ -26,14 +26,14 @@ public class CalendarController {
                                             @RequestParam(required = false) LocalDateTime startDate,
                                             @RequestParam(required = false) LocalDateTime endDate){
 
-        String extractedToken = (String) request.getAttribute("userInfo");
+        String userInfo = (String) request.getAttribute("userInfo");
 
-        log.info("Extracted token: " + extractedToken);
+        log.info("userInfo: " + userInfo);
         log.info("position: " + position);
         log.info("startDate: " + startDate);
         log.info("endDate: " + endDate);
 
-        return calendarService.interviewsList(extractedToken, position, startDate, endDate);
+        return calendarService.interviewsList(userInfo, position, startDate, endDate);
     }
 
     // 면접 일정 추가

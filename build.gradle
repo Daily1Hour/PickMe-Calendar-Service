@@ -50,6 +50,9 @@ dependencies {
     // .env
     implementation 'io.github.cdimascio:java-dotenv:5.2.2'
 
+    // Jwt
+    implementation 'com.auth0:java-jwt:4.4.0'
+
 }
 
 tasks.named('test') {
