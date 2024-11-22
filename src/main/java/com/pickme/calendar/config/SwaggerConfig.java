@@ -1,4 +1,4 @@
-package com.example.calendar.config;
+package com.pickme.calendar.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

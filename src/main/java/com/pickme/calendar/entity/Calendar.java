@@ -1,4 +1,4 @@
-package com.example.calendar.entity;
+package com.pickme.calendar.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -24,5 +24,7 @@ public class Calendar {
     private LocalDateTime interviewTime;
 
     private String position;
+
+    // 설명칸, 면접 유형 추가
 
 }

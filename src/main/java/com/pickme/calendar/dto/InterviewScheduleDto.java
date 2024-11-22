@@ -1,4 +1,4 @@
-package com.example.calendar.dto;
+package com.pickme.calendar.dto;
 
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
