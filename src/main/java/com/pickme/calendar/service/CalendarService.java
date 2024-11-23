@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,15 +27,15 @@ public class CalendarService {
     private final CalendarMongoQueryProcessor calendarMongoQueryProcessor;
 
     // 해당 사용자의 면접 일정 전체 조회 레포지토리에 요청
-    public ResponseEntity<?> interviewsList(String userInfo, String position, LocalDateTime startDate, LocalDateTime endDate){
-
-        List<Calendar> calendarList = calendarMongoQueryProcessor.findInterviewsByCriteria(userInfo, position, startDate, endDate);
-
-        if(calendarList.isEmpty()){
-            throw new CustomException(ErrorCode.NULL_USERINFO, "해당 조건에 대한 사용자의 면접 일정은 없습니다.");
+    public ResponseEntity<?> interviewsList(String userInfo, String name){
+        //Optional<Calendar> optionalCalendar = calendarRepository.findByUserInfo(userInfo);
+        if (calendarRepository.existsByUserInfo(userInfo)){
+            Calendar calendar = calendarRepository.findByUserInfo(userInfo);
+            List<Calendar.InterviewDetails> interviewDetails = calendarMongoQueryProcessor.findCalendar(calendar, name);
+            return ResponseEntity.status(HttpStatus.OK).body(interviewDetails);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(calendarMapper.toGetInterviewListDto(calendarList));
+        return ResponseEntity.status(HttpStatus.OK).body("성공");
     }
 
     // 사용자의 면접 일정 추가
