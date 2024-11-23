@@ -2,6 +2,8 @@ package com.pickme.calendar.service.mapper;
 
 import com.pickme.calendar.dto.GetInterviewListDTO;
 import com.pickme.calendar.dto.InterviewScheduleDTO;
+import com.pickme.calendar.dto.get.GetCalendarDTO;
+import com.pickme.calendar.dto.get.GetInterviewDetailDTO;
 import com.pickme.calendar.dto.post.PostInterviewDetailDTO;
 import com.pickme.calendar.entity.Calendar;
 import org.mapstruct.Mapper;
@@ -26,4 +28,9 @@ public interface CalendarMapper {
 
 
     Calendar.InterviewDetails postInterviewDetailDtoToInterviewDetails (PostInterviewDetailDTO postInterviewDetailDto, @MappingTarget Calendar.InterviewDetails interviewDetails);
+
+    @Mapping(target = "interviewDetails", ignore = true)
+    void calendarToGetCalendarDTO (Calendar calendar, @MappingTarget GetCalendarDTO getCalendarDTO);
+
+    List<GetInterviewDetailDTO> interviewDetailsToGetInterviewDetailsDTO (List<Calendar.InterviewDetails> interviewDetails);
 }
