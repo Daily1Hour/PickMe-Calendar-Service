@@ -40,6 +40,7 @@ public class Calendar {
     public static class Company {
 
         private String name;
+
         private String location;
 
     }
