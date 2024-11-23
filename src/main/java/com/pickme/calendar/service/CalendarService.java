@@ -1,6 +1,7 @@
 package com.pickme.calendar.service;
 
 import com.pickme.calendar.dto.InterviewScheduleDto;
+import com.pickme.calendar.dto.post.PostInterviewDetailDto;
 import com.pickme.calendar.entity.Calendar;
 import com.pickme.calendar.exception.CustomException;
 import com.pickme.calendar.exception.ErrorCode;
@@ -37,11 +38,23 @@ public class CalendarService {
         return ResponseEntity.status(HttpStatus.OK).body(calendarMapper.toGetInterviewListDto(calendarList));
     }
 
+//    // 사용자의 면접 일정 추가
+//    public boolean registerInterviewSchedule(InterviewScheduleDto interviewScheduleDto, String token) {
+//        Calendar calendar = new Calendar();
+//        calendar.setUserInfo(token);
+//        calendarMapper.toCalendarEntity(interviewScheduleDto, calendar);
+//        calendarRepository.save(calendar);
+//        return true;
+//    }
+
     // 사용자의 면접 일정 추가
-    public boolean registerInterviewSchedule(InterviewScheduleDto interviewScheduleDto, String token) {
+    public boolean registerInterviewSchedule(PostInterviewDetailDto postInterviewDetailDto, String token) {
         Calendar calendar = new Calendar();
         calendar.setUserInfo(token);
-        calendarMapper.toCalendarEntity(interviewScheduleDto, calendar);
+
+        Calendar.InterviewDetails interviewDetails = new Calendar.InterviewDetails();
+        calendarMapper.postInterviewDetailDtoToInterviewDetails(postInterviewDetailDto, interviewDetails);
+        calendar.setInterviewDetails(List.of(interviewDetails));
         calendarRepository.save(calendar);
         return true;
     }

@@ -2,6 +2,7 @@ package com.pickme.calendar.service.mapper;
 
 import com.pickme.calendar.dto.GetInterviewListDto;
 import com.pickme.calendar.dto.InterviewScheduleDto;
+import com.pickme.calendar.dto.post.PostInterviewDetailDto;
 import com.pickme.calendar.entity.Calendar;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -22,4 +23,7 @@ public interface CalendarMapper {
 
     // Calendar 엔티티 리스트를 GetInterviewListDto 리스트로 변환합니다.
     List<GetInterviewListDto> toGetInterviewListDto(List<Calendar> calendarList);
+
+
+    Calendar.InterviewDetails postInterviewDetailDtoToInterviewDetails (PostInterviewDetailDto postInterviewDetailDto, @MappingTarget Calendar.InterviewDetails interviewDetails);
 }
