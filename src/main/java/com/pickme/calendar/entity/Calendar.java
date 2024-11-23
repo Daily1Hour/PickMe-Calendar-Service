@@ -24,9 +24,7 @@ public class Calendar {
     @NoArgsConstructor
     public static class InterviewDetails{
 
-        private String companyName;
-
-        private String location;
+        private Company company;
 
         private LocalDateTime interviewTime;
 
@@ -35,5 +33,14 @@ public class Calendar {
         private String category;
 
         private String description;
+    }
+
+    @Data
+    @NoArgsConstructor
+    public static class Company {
+
+        private String name;
+        private String location;
+
     }
 }
