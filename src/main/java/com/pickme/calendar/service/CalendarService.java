@@ -57,20 +57,29 @@ public class CalendarService {
 
     // 사용자의 면접 일정 추가
     public boolean registerInterviewSchedule(PostInterviewDetailDTO postInterviewDetailDto, String token) {
+
         Calendar calendar;
 
+        // 사용자 면접 일정 정보가 존재하는 지 확인
         if(calendarRepository.existsByUserInfo(token)){
+            // 사용자의 면접 일정을 Calendar 객체로 가져옴
             calendar = calendarRepository.findByUserInfo(token);
         } else {
+            // 사용자의 면접 일정이 없다면 새로운 Calendar 객체 생성
             calendar = new Calendar();
-            calendar.setUserInfo(token);
-            calendar.setInterviewDetails(new ArrayList<>());
+            calendar.setUserInfo(token); // 사용자 정보 설정
+            calendar.setInterviewDetails(new ArrayList<>()); // 빈 면접 일정 리스트 초기화
         }
 
+        // 새로운 InterviesDetails 객체 생성
         Calendar.InterviewDetails interviewDetails = new Calendar.InterviewDetails();
+        // 전달받은 DTO(PostInterviewDetailDTO)를 InterviewDetails 객체로 변환
         calendarMapper.postInterviewDetailDtoToInterviewDetails(postInterviewDetailDto, interviewDetails);
+        // 변환된 interviewDetails를 Calendar의 interviewDetails 리스트에 추가
         calendar.getInterviewDetails().add(interviewDetails);
+        // 업데이트된 Calendar 객체를 데이터베이스에 저장
         calendarRepository.save(calendar);
+        // 면접 일정 등록 완료 후 true 반환
         return true;
     }
 
