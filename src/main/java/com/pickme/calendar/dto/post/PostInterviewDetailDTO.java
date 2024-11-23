@@ -5,9 +5,9 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class PostInterviewDetailDto {
+public class PostInterviewDetailDTO {
 
-    private PostCompanyDto company;
+    private PostCompanyDTO company;
 
     private LocalDateTime interviewTime;
 

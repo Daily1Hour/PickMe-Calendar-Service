@@ -1,7 +1,7 @@
 package com.pickme.calendar.controller;
 
-import com.pickme.calendar.dto.InterviewScheduleDto;
-import com.pickme.calendar.dto.post.PostInterviewDetailDto;
+import com.pickme.calendar.dto.InterviewScheduleDTO;
+import com.pickme.calendar.dto.post.PostInterviewDetailDTO;
 import com.pickme.calendar.service.CalendarService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class CalendarController {
     // 면접 일정 추가
     @PostMapping("/interviews")
     public ResponseEntity<?> createInterviewSchedule(HttpServletRequest request,
-                                                     @RequestBody PostInterviewDetailDto postInterviewDetailDto){
+                                                     @RequestBody PostInterviewDetailDTO postInterviewDetailDto){
 
         String extractedToken = (String) request.getAttribute("userInfo");
 
@@ -70,7 +70,7 @@ public class CalendarController {
     @PutMapping("/interviews")
     public ResponseEntity<?> putInterviewSchedule(HttpServletRequest request,
                                                   @RequestParam String id,
-                                                  @RequestBody InterviewScheduleDto interviewScheduleDto){
+                                                  @RequestBody InterviewScheduleDTO interviewScheduleDto){
 
         String extractedToken = (String) request.getAttribute("userInfo");
 

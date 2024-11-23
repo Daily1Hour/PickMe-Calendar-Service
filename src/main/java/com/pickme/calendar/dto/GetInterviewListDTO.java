@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class GetInterviewListDto {
+public class GetInterviewListDTO {
     private String id;
     private String userInfo;
     private String location;

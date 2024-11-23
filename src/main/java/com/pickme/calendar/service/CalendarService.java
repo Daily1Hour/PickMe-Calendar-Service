@@ -1,7 +1,7 @@
 package com.pickme.calendar.service;
 
-import com.pickme.calendar.dto.InterviewScheduleDto;
-import com.pickme.calendar.dto.post.PostInterviewDetailDto;
+import com.pickme.calendar.dto.InterviewScheduleDTO;
+import com.pickme.calendar.dto.post.PostInterviewDetailDTO;
 import com.pickme.calendar.entity.Calendar;
 import com.pickme.calendar.exception.CustomException;
 import com.pickme.calendar.exception.ErrorCode;
@@ -39,7 +39,7 @@ public class CalendarService {
     }
 
     // 사용자의 면접 일정 추가
-    public boolean registerInterviewSchedule(PostInterviewDetailDto postInterviewDetailDto, String token) {
+    public boolean registerInterviewSchedule(PostInterviewDetailDTO postInterviewDetailDto, String token) {
         Calendar calendar;
 
         if(calendarRepository.existsByUserInfo(token)){
@@ -68,7 +68,7 @@ public class CalendarService {
     }
 
     // 사용자의 면접 일정 수정
-    public ResponseEntity<?> putInterviewSchedule(String userInfo, String id, InterviewScheduleDto interviewScheduleDto) {
+    public ResponseEntity<?> putInterviewSchedule(String userInfo, String id, InterviewScheduleDTO interviewScheduleDto) {
         Optional<Calendar> optionalCalendar = Optional.ofNullable(calendarRepository.findByUserInfoAndId(userInfo, id));
         if(optionalCalendar.isEmpty()){
             throw new CustomException(ErrorCode.DOCUMENT_NOT_FOUND, String.format("%s 님의 %s id에 해당하는 면접 일정은 없습니다.", userInfo,id));

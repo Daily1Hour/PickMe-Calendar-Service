@@ -3,7 +3,7 @@ package com.pickme.calendar.dto.post;
 import lombok.Data;
 
 @Data
-public class PostCompanyDto {
+public class PostCompanyDTO {
     private String name;
     private String location;
 }
