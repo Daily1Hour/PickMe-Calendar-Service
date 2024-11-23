@@ -1,6 +1,7 @@
 package com.pickme.calendar.controller;
 
 import com.pickme.calendar.dto.InterviewScheduleDto;
+import com.pickme.calendar.dto.post.PostInterviewDetailDto;
 import com.pickme.calendar.service.CalendarService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -36,15 +37,34 @@ public class CalendarController {
         return calendarService.interviewsList(userInfo, position, startDate, endDate);
     }
 
+//    // 면접 일정 추가
+//    @PostMapping("/interviews")
+//    public ResponseEntity<?> createInterviewSchedule(HttpServletRequest request,
+//                                                       @RequestBody InterviewScheduleDto interviewScheduleDto){
+//
+//        String extractedToken = (String) request.getAttribute("userInfo");
+//
+//        // 받아온 데이터를 DB에 저장 요청
+//        boolean b = calendarService.registerInterviewSchedule(interviewScheduleDto, extractedToken);
+//
+//        // 저장 성공 시 OK 반환
+//        if(b){
+//            return ResponseEntity.status(HttpStatus.OK).body("Create Success");
+//        }
+//        // 저장 실패 시 Fail 반환
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//
+//    }
+
     // 면접 일정 추가
     @PostMapping("/interviews")
     public ResponseEntity<?> createInterviewSchedule(HttpServletRequest request,
-                                                       @RequestBody InterviewScheduleDto interviewScheduleDto){
+                                                     @RequestBody PostInterviewDetailDto postInterviewDetailDto){
 
         String extractedToken = (String) request.getAttribute("userInfo");
 
         // 받아온 데이터를 DB에 저장 요청
-        boolean b = calendarService.registerInterviewSchedule(interviewScheduleDto, extractedToken);
+        boolean b = calendarService.registerInterviewSchedule(postInterviewDetailDto, extractedToken);
 
         // 저장 성공 시 OK 반환
         if(b){
