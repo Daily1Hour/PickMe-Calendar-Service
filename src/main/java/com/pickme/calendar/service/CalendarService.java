@@ -1,6 +1,8 @@
 package com.pickme.calendar.service;
 
 import com.pickme.calendar.dto.InterviewScheduleDTO;
+import com.pickme.calendar.dto.get.GetCalendarDTO;
+import com.pickme.calendar.dto.get.GetInterviewDetailDTO;
 import com.pickme.calendar.dto.post.PostInterviewDetailDTO;
 import com.pickme.calendar.entity.Calendar;
 import com.pickme.calendar.exception.CustomException;
@@ -28,14 +30,29 @@ public class CalendarService {
 
     // 해당 사용자의 면접 일정 전체 조회 레포지토리에 요청
     public ResponseEntity<?> interviewsList(String userInfo, String name){
-        //Optional<Calendar> optionalCalendar = calendarRepository.findByUserInfo(userInfo);
-        if (calendarRepository.existsByUserInfo(userInfo)){
-            Calendar calendar = calendarRepository.findByUserInfo(userInfo);
-            List<Calendar.InterviewDetails> interviewDetails = calendarMongoQueryProcessor.findCalendar(calendar, name);
-            return ResponseEntity.status(HttpStatus.OK).body(interviewDetails);
-        }
 
-        return ResponseEntity.status(HttpStatus.OK).body("성공");
+        // 사용자의 면접 일정이 존재하는지 확인
+        if (calendarRepository.existsByUserInfo(userInfo)){
+            // 사용자의 면접 일정 전체를 Calendar 객체로 가져옴
+            Calendar calendar = calendarRepository.findByUserInfo(userInfo);
+            // 주어진 조건(현재는 name)으로 필터링된 interviewDetails 리스트를 가져옴
+            List<Calendar.InterviewDetails> interviewDetails = calendarMongoQueryProcessor.findCalendar(calendar, name);
+
+            // 응답을 위한 GetCalendarDTO 객체 생성
+            GetCalendarDTO getCalendarDTO = new GetCalendarDTO();
+            // Calendar 엔티티의 정보를 GetCalendarDTO로 매핑 (id, userInfo 등)
+            calendarMapper.calendarToGetCalendarDTO(calendar, getCalendarDTO);
+
+            // interviewDetails 리스트를 GetInterviewDetailDTO 객체로 변환
+            List<GetInterviewDetailDTO> getInterviewListDTOList = calendarMapper.interviewDetailsToGetInterviewDetailsDTO(interviewDetails);
+            // 변환된 interviewDetails 리스트를 GetCalendarDTO 객체에 설정
+            getCalendarDTO.setInterviewDetails(getInterviewListDTOList);
+
+            return ResponseEntity.status(HttpStatus.OK).body(getCalendarDTO);
+
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 조건의 사용자 면접 일정이 없습니다.");
+        }
     }
 
     // 사용자의 면접 일정 추가
