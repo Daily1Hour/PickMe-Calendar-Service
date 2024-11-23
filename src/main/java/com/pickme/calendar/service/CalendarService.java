@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,23 +39,21 @@ public class CalendarService {
         return ResponseEntity.status(HttpStatus.OK).body(calendarMapper.toGetInterviewListDto(calendarList));
     }
 
-//    // 사용자의 면접 일정 추가
-//    public boolean registerInterviewSchedule(InterviewScheduleDto interviewScheduleDto, String token) {
-//        Calendar calendar = new Calendar();
-//        calendar.setUserInfo(token);
-//        calendarMapper.toCalendarEntity(interviewScheduleDto, calendar);
-//        calendarRepository.save(calendar);
-//        return true;
-//    }
-
     // 사용자의 면접 일정 추가
     public boolean registerInterviewSchedule(PostInterviewDetailDto postInterviewDetailDto, String token) {
-        Calendar calendar = new Calendar();
-        calendar.setUserInfo(token);
+        Calendar calendar;
+
+        if(calendarRepository.existsByUserInfo(token)){
+            calendar = calendarRepository.findByUserInfo(token);
+        } else {
+            calendar = new Calendar();
+            calendar.setUserInfo(token);
+            calendar.setInterviewDetails(new ArrayList<>());
+        }
 
         Calendar.InterviewDetails interviewDetails = new Calendar.InterviewDetails();
         calendarMapper.postInterviewDetailDtoToInterviewDetails(postInterviewDetailDto, interviewDetails);
-        calendar.setInterviewDetails(List.of(interviewDetails));
+        calendar.getInterviewDetails().add(interviewDetails);
         calendarRepository.save(calendar);
         return true;
     }
