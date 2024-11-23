@@ -7,9 +7,7 @@ import java.time.LocalDateTime;
 @Data
 public class PostInterviewDetailDto {
 
-    private String companyName;
-
-    private String location;
+    private PostCompanyDto postCompanyDto;
 
     private LocalDateTime interviewTime;
 
