@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Document(collection = "calendar")
 @Data
@@ -17,14 +18,22 @@ public class Calendar {
 
     private String userInfo;
 
-    private String location;
+    private List<InterviewDetails> interviewDetails;
 
-    private String companyName;
+    @Data
+    @NoArgsConstructor
+    public static class InterviewDetails{
 
-    private LocalDateTime interviewTime;
+        private String companyName;
 
-    private String position;
+        private String location;
 
-    // 설명칸, 면접 유형 추가
+        private LocalDateTime interviewTime;
 
+        private String position;
+
+        private String category;
+
+        private String description;
+    }
 }
