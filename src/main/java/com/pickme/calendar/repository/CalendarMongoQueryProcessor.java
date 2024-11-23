@@ -42,9 +42,13 @@ public class CalendarMongoQueryProcessor {
         return calendarList;
     }
 
-    public List<Calendar.InterviewDetails> findCalendar(Calendar calendar, String name) {
-        return calendar.getInterviewDetails().stream()
-                .filter(ir -> name == null || ir.getCompany().getName().equals(name)).toList();
+    // 주어진 Calendar 객체에서 면접 일정 목록을 가져오는 메서드
+    // 주어진 조건(name)이 null이 아니면 해당 회사 이름과 일치하는 면접 일정만 필터링하여 반환
+    // 조건(name)이 null인 경우 모든 면접 일정을 반환
+    public List<Calendar.InterviewDetails> filterInterviewDetails(Calendar calendar, String name) {
+        return calendar.getInterviewDetails().stream() // 면접 일정 리스트를 스트림으로 변환
+                .filter(interviewDetail -> name == null || interviewDetail .getCompany().getName().equals(name)) // 회사 이름 필터링
+                .toList(); // 결과를 리스트로 반환
     }
 
 }

@@ -36,7 +36,7 @@ public class CalendarService {
             // 사용자의 면접 일정 전체를 Calendar 객체로 가져옴
             Calendar calendar = calendarRepository.findByUserInfo(userInfo);
             // 주어진 조건(현재는 name)으로 필터링된 interviewDetails 리스트를 가져옴
-            List<Calendar.InterviewDetails> interviewDetails = calendarMongoQueryProcessor.findCalendar(calendar, name);
+            List<Calendar.InterviewDetails> interviewDetails = calendarMongoQueryProcessor.filterInterviewDetails(calendar, name);
 
             // 응답을 위한 GetCalendarDTO 객체 생성
             GetCalendarDTO getCalendarDTO = new GetCalendarDTO();
