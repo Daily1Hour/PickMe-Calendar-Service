@@ -1,6 +1,7 @@
 package com.pickme.calendar.service;
 
-import com.pickme.calendar.dto.InterviewScheduleDto;
+import com.pickme.calendar.dto.InterviewScheduleDTO;
+import com.pickme.calendar.dto.post.PostInterviewDetailDTO;
 import com.pickme.calendar.entity.Calendar;
 import com.pickme.calendar.exception.CustomException;
 import com.pickme.calendar.exception.ErrorCode;
@@ -13,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,22 +27,32 @@ public class CalendarService {
     private final CalendarMongoQueryProcessor calendarMongoQueryProcessor;
 
     // 해당 사용자의 면접 일정 전체 조회 레포지토리에 요청
-    public ResponseEntity<?> interviewsList(String userInfo, String position, LocalDateTime startDate, LocalDateTime endDate){
-
-        List<Calendar> calendarList = calendarMongoQueryProcessor.findInterviewsByCriteria(userInfo, position, startDate, endDate);
-
-        if(calendarList.isEmpty()){
-            throw new CustomException(ErrorCode.NULL_USERINFO, "해당 조건에 대한 사용자의 면접 일정은 없습니다.");
+    public ResponseEntity<?> interviewsList(String userInfo, String name){
+        //Optional<Calendar> optionalCalendar = calendarRepository.findByUserInfo(userInfo);
+        if (calendarRepository.existsByUserInfo(userInfo)){
+            Calendar calendar = calendarRepository.findByUserInfo(userInfo);
+            List<Calendar.InterviewDetails> interviewDetails = calendarMongoQueryProcessor.findCalendar(calendar, name);
+            return ResponseEntity.status(HttpStatus.OK).body(interviewDetails);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(calendarMapper.toGetInterviewListDto(calendarList));
+        return ResponseEntity.status(HttpStatus.OK).body("성공");
     }
 
     // 사용자의 면접 일정 추가
-    public boolean registerInterviewSchedule(InterviewScheduleDto interviewScheduleDto, String token) {
-        Calendar calendar = new Calendar();
-        calendar.setUserInfo(token);
-        calendarMapper.toCalendarEntity(interviewScheduleDto, calendar);
+    public boolean registerInterviewSchedule(PostInterviewDetailDTO postInterviewDetailDto, String token) {
+        Calendar calendar;
+
+        if(calendarRepository.existsByUserInfo(token)){
+            calendar = calendarRepository.findByUserInfo(token);
+        } else {
+            calendar = new Calendar();
+            calendar.setUserInfo(token);
+            calendar.setInterviewDetails(new ArrayList<>());
+        }
+
+        Calendar.InterviewDetails interviewDetails = new Calendar.InterviewDetails();
+        calendarMapper.postInterviewDetailDtoToInterviewDetails(postInterviewDetailDto, interviewDetails);
+        calendar.getInterviewDetails().add(interviewDetails);
         calendarRepository.save(calendar);
         return true;
     }
@@ -57,7 +68,7 @@ public class CalendarService {
     }
 
     // 사용자의 면접 일정 수정
-    public ResponseEntity<?> putInterviewSchedule(String userInfo, String id, InterviewScheduleDto interviewScheduleDto) {
+    public ResponseEntity<?> putInterviewSchedule(String userInfo, String id, InterviewScheduleDTO interviewScheduleDto) {
         Optional<Calendar> optionalCalendar = Optional.ofNullable(calendarRepository.findByUserInfoAndId(userInfo, id));
         if(optionalCalendar.isEmpty()){
             throw new CustomException(ErrorCode.DOCUMENT_NOT_FOUND, String.format("%s 님의 %s id에 해당하는 면접 일정은 없습니다.", userInfo,id));

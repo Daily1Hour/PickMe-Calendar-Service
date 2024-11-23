@@ -42,4 +42,9 @@ public class CalendarMongoQueryProcessor {
         return calendarList;
     }
 
+    public List<Calendar.InterviewDetails> findCalendar(Calendar calendar, String name) {
+        return calendar.getInterviewDetails().stream()
+                .filter(ir -> name == null || ir.getCompany().getName().equals(name)).toList();
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.pickme.calendar.controller;
 
-import com.pickme.calendar.dto.InterviewScheduleDto;
+import com.pickme.calendar.dto.InterviewScheduleDTO;
+import com.pickme.calendar.dto.post.PostInterviewDetailDTO;
 import com.pickme.calendar.service.CalendarService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -8,8 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/calendar")
@@ -22,29 +21,24 @@ public class CalendarController {
     // 해당 사용자 면접 일정 전체 조회
     @GetMapping("/interviews")
     public ResponseEntity<?> interviewsList(HttpServletRequest request,
-                                            @RequestParam(required = false) String position,
-                                            @RequestParam(required = false) LocalDateTime startDate,
-                                            @RequestParam(required = false) LocalDateTime endDate){
+                                            @RequestParam(required = false) String name) {
 
         String userInfo = (String) request.getAttribute("userInfo");
 
         log.info("userInfo: " + userInfo);
-        log.info("position: " + position);
-        log.info("startDate: " + startDate);
-        log.info("endDate: " + endDate);
 
-        return calendarService.interviewsList(userInfo, position, startDate, endDate);
+        return calendarService.interviewsList(userInfo, name);
     }
 
     // 면접 일정 추가
     @PostMapping("/interviews")
     public ResponseEntity<?> createInterviewSchedule(HttpServletRequest request,
-                                                       @RequestBody InterviewScheduleDto interviewScheduleDto){
+                                                     @RequestBody PostInterviewDetailDTO postInterviewDetailDto){
 
         String extractedToken = (String) request.getAttribute("userInfo");
 
         // 받아온 데이터를 DB에 저장 요청
-        boolean b = calendarService.registerInterviewSchedule(interviewScheduleDto, extractedToken);
+        boolean b = calendarService.registerInterviewSchedule(postInterviewDetailDto, extractedToken);
 
         // 저장 성공 시 OK 반환
         if(b){
@@ -76,7 +70,7 @@ public class CalendarController {
     @PutMapping("/interviews")
     public ResponseEntity<?> putInterviewSchedule(HttpServletRequest request,
                                                   @RequestParam String id,
-                                                  @RequestBody InterviewScheduleDto interviewScheduleDto){
+                                                  @RequestBody InterviewScheduleDTO interviewScheduleDto){
 
         String extractedToken = (String) request.getAttribute("userInfo");
 
