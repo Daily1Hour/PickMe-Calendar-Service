@@ -3,6 +3,8 @@ package com.pickme.calendar.controller;
 import com.pickme.calendar.dto.post.PostInterviewDetailDTO;
 import com.pickme.calendar.dto.put.PutInterviewDetailDTO;
 import com.pickme.calendar.service.CalendarService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,11 +16,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/calendar")
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "Calendar", description = "면접 캘린더 API")
 public class CalendarController {
 
     private final CalendarService calendarService;
 
     // 해당 사용자 면접 일정 전체 조회
+    @Operation(summary = "면접 일정 조회", description = "면접 일정 전체 조회 & 특정 조건에 해당하는 면접 일정 조회")
     @GetMapping("/interviews")
     public ResponseEntity<?> interviewsList(HttpServletRequest request,
                                             @RequestParam(required = false) String interviewDetailId,
@@ -33,6 +37,7 @@ public class CalendarController {
     }
 
     // 면접 일정 추가
+    @Operation(summary = "면접 일정 추가", description = "새로운 면접 일정 추가")
     @PostMapping("/interviews")
     public ResponseEntity<?> createInterviewSchedule(HttpServletRequest request,
                                                      @RequestBody PostInterviewDetailDTO postInterviewDetailDto){
@@ -52,6 +57,7 @@ public class CalendarController {
     }
 
     // 면접 일정 삭제
+    @Operation(summary = "면접 일정 삭제", description = "interviewDetailId에 해당하는 면접 일정 삭제")
     @DeleteMapping("/interviews")
     public ResponseEntity<?> deleteInterviewSchedule(HttpServletRequest request,
                                                      @RequestParam String id){
@@ -62,6 +68,7 @@ public class CalendarController {
     }
 
     // 특정 면접 일정 수정
+    @Operation(summary = "면접 일정 수정", description = "interviewDetailId에 해당하는 면접 일정 수정")
     @PutMapping("/interviews")
     public ResponseEntity<?> putInterviewSchedule(HttpServletRequest request,
                                                   @RequestParam String id,
