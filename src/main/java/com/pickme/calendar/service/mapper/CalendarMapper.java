@@ -27,6 +27,7 @@ public interface CalendarMapper {
     List<GetInterviewListDTO> toGetInterviewListDto(List<Calendar> calendarList);
 
     // 전달받은 DTO(PostInterviewDetailDTO)를 InterviewDetails 객체로 변환
+    @Mapping(target = "interviewDetailId", ignore = true)
     void postInterviewDetailDtoToInterviewDetails (PostInterviewDetailDTO postInterviewDetailDto, @MappingTarget Calendar.InterviewDetails interviewDetails);
 
     // Calendar 엔티티의 정보를 GetCalendarDTO로 매핑 (id, userInfo)

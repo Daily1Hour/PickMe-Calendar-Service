@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 @Data
 public class GetInterviewDetailDTO {
 
+    private String interviewDetailId;
+
     private GetCompanyDTO company;
 
     private LocalDateTime interviewTime;

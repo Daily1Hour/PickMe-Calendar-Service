@@ -24,6 +24,8 @@ public class Calendar {
     @NoArgsConstructor
     public static class InterviewDetails{
 
+        private String interviewDetailId;
+
         private Company company;
 
         private LocalDateTime interviewTime;

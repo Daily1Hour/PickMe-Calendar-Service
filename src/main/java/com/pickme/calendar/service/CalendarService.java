@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -73,6 +74,8 @@ public class CalendarService {
 
         // 새로운 InterviesDetails 객체 생성
         Calendar.InterviewDetails interviewDetails = new Calendar.InterviewDetails();
+        // InterviesDetails 객체의 interviewDetailId 값 설정
+        interviewDetails.setInterviewDetailId(UUID.randomUUID().toString());
         // 전달받은 DTO(PostInterviewDetailDTO)를 InterviewDetails 객체로 변환
         calendarMapper.postInterviewDetailDtoToInterviewDetails(postInterviewDetailDto, interviewDetails);
         // 변환된 interviewDetails를 Calendar의 interviewDetails 리스트에 추가
