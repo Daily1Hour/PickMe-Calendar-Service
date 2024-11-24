@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -14,11 +15,22 @@ public class CalendarMongoQueryProcessor {
     private final MongoTemplate mongoTemplate;
 
     // 주어진 Calendar 객체에서 면접 일정 목록을 가져오는 메서드
-    // 주어진 조건(name)이 null이 아니면 해당 회사 이름과 일치하는 면접 일정만 필터링하여 반환
-    // 조건(name)이 null인 경우 모든 면접 일정을 반환
-    public List<Calendar.InterviewDetails> filterInterviewDetails(Calendar calendar, String name) {
+    // 주어진 조건(interviewDetailId, name, yearMonth)이 null이 아니면 해당 조건과 일치하는 면접 일정만 필터링하여 반환
+    // 조건(interviewDetailId, name, yearMonth)이 null인 경우 모든 면접 일정을 반환
+    public List<Calendar.InterviewDetails> filterInterviewDetails(Calendar calendar, String interviewDetailId, String name, String yearMonth) {
         return calendar.getInterviewDetails().stream() // 면접 일정 리스트를 스트림으로 변환
+                .filter(interviewDetail -> interviewDetailId == null || interviewDetail.getInterviewDetailId().equals(interviewDetailId))
                 .filter(interviewDetail -> name == null || interviewDetail.getCompany().getName().equals(name)) // 회사 이름 필터링
+                .filter(interviewDetail -> {
+                    if (yearMonth != null) {
+                        // yearMonth를 파싱하여 year와 month 추출
+                        int year = Integer.parseInt(yearMonth.substring(0, 4));  // 연도: 앞의 4자리
+                        int month = Integer.parseInt(yearMonth.substring(4));   // 월: 뒤의 2자리
+                        LocalDateTime interviewTime = interviewDetail.getInterviewTime();
+                        return interviewTime.getYear() == year && interviewTime.getMonthValue() == month;
+                    }
+                    return true; // yearMonth가 없으면 필터링하지 않음
+                })
                 .toList(); // 결과를 리스트로 반환
     }
 

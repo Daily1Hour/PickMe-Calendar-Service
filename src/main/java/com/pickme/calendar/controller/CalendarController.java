@@ -21,13 +21,15 @@ public class CalendarController {
     // 해당 사용자 면접 일정 전체 조회
     @GetMapping("/interviews")
     public ResponseEntity<?> interviewsList(HttpServletRequest request,
-                                            @RequestParam(required = false) String name) {
+                                            @RequestParam(required = false) String interviewDetailId,
+                                            @RequestParam(required = false) String name,
+                                            @RequestParam(required = false) String yearMonth) {
 
         String userInfo = (String) request.getAttribute("userInfo");
 
         log.info("userInfo: " + userInfo);
 
-        return calendarService.interviewsList(userInfo, name);
+        return calendarService.interviewsList(userInfo, interviewDetailId ,name, yearMonth);
     }
 
     // 면접 일정 추가
