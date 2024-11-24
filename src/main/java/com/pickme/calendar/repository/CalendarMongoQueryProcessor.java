@@ -51,13 +51,19 @@ public class CalendarMongoQueryProcessor {
                 .toList(); // 결과를 리스트로 반환
     }
 
+    // 사용자의 interviewDetailId에 해당하는 일정 가져오는 메서드.
+    public Calendar.InterviewDetails findInterviewDetail (Calendar calendar, String interviewDetailId){
+        // 스트림을 사용하여 주어진 interviewDetailId에 해당하는 면접 일정을 찾음
+        return calendar.getInterviewDetails().stream()
+                .filter(interviewDetails -> interviewDetails.getInterviewDetailId().equals(interviewDetailId)) // 조건에 맞는 일정 필터링
+                .findFirst() // 첫 번째 요소를 Optional로 반환
+                .orElse(null); // 결과가 없으면 null 반환
+    }
+
     // 주어진 Calendar 객체에서 특정 면접 일정(interviewDetailId)을 삭제하는 메서드.
     public boolean deleteInterview (Calendar calendar, String interviewDetailId){
         // 스트림을 사용하여 주어진 interviewDetailId에 해당하는 면접 일정을 찾음
-        Calendar.InterviewDetails result = calendar.getInterviewDetails().stream()
-                .filter(interviewDetails -> interviewDetails.getInterviewDetailId().equals(interviewDetailId)) // 조건에 맞는 일정 필터링
-                .findFirst() // 첫 번째 요소를 Optional로 반환
-                .orElse(null);  // 결과가 없으면 null 반환
+        Calendar.InterviewDetails result = findInterviewDetail(calendar, interviewDetailId);
 
         // 해당 면접 일정이 존재하는 경우
         if(result != null){
