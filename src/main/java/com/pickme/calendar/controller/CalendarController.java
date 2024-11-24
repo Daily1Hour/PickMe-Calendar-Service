@@ -56,14 +56,7 @@ public class CalendarController {
 
         String extractedToken = (String) request.getAttribute("userInfo");
 
-        boolean b = calendarService.deleteInterviewSchedule(extractedToken, id);
-
-        if(b){
-
-            return ResponseEntity.status(HttpStatus.OK).body("Delete Success");
-        }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return calendarService.deleteInterviewSchedule(extractedToken, id);
     }
 
     // 특정 면접 일정 수정

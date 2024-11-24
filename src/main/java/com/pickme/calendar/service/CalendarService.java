@@ -87,15 +87,19 @@ public class CalendarService {
     }
 
     // 사용자의 면접 일정 삭제
-    public boolean deleteInterviewSchedule(String userInfo, String id) {
+    public ResponseEntity<?> deleteInterviewSchedule(String userInfo, String id) {
         // 사용자 면접 일정 정보가 존재하는 지 확인
         if (calendarRepository.existsByUserInfo(userInfo)){
             // 사용자의 면접 일정을 Calendar 객체로 가져옴
             Calendar calendar = calendarRepository.findByUserInfo(userInfo);
             boolean b = calendarMongoQueryProcessor.deleteInterview(calendar, id);
-            return b;
+            if(b){
+                return ResponseEntity.status(HttpStatus.OK).body("삭제 성공");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("id에 해당하는 면접 일정이 없습니다.");
+            }
         } else {
-            return false;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자 정보가 없습니다.");
         }
 
     }
