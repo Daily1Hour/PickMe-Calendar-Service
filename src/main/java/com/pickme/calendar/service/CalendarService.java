@@ -88,12 +88,16 @@ public class CalendarService {
 
     // 사용자의 면접 일정 삭제
     public boolean deleteInterviewSchedule(String userInfo, String id) {
-        Optional<Calendar> optionalCalendar = Optional.ofNullable(calendarRepository.findByUserInfoAndId(userInfo, id));
-        if(optionalCalendar.isEmpty()){
-            throw new CustomException(ErrorCode.DOCUMENT_NOT_FOUND, String.format("%s 님의 %s id에 해당하는 면접 일정은 없습니다.", userInfo,id));
+        // 사용자 면접 일정 정보가 존재하는 지 확인
+        if (calendarRepository.existsByUserInfo(userInfo)){
+            // 사용자의 면접 일정을 Calendar 객체로 가져옴
+            Calendar calendar = calendarRepository.findByUserInfo(userInfo);
+            boolean b = calendarMongoQueryProcessor.deleteInterview(calendar, id);
+            return b;
+        } else {
+            return false;
         }
-        calendarRepository.deleteByUserInfoAndId(userInfo, id);
-        return true;
+
     }
 
     // 사용자의 면접 일정 수정
