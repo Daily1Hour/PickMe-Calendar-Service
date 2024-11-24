@@ -4,6 +4,7 @@ import com.pickme.calendar.dto.post.PostInterviewDetailDTO;
 import com.pickme.calendar.dto.put.PutInterviewDetailDTO;
 import com.pickme.calendar.service.CalendarService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,11 @@ public class CalendarController {
     @Operation(summary = "면접 일정 조회", description = "면접 일정 전체 조회 & 특정 조건에 해당하는 면접 일정 조회")
     @GetMapping("/interviews")
     public ResponseEntity<?> interviewsList(HttpServletRequest request,
+                                            @Parameter(description = "면접 일정 ID (필터링 조건)", example = "27e725b8-5816-4783-a4d0-7a19e7ae4f34")
                                             @RequestParam(required = false) String interviewDetailId,
+                                            @Parameter(description = "회사 이름 (필터링 조건)", example = "앙떼띠")
                                             @RequestParam(required = false) String name,
+                                            @Parameter(description = "조회할 년/월 (yyyyMM 형식, 필터링 조건)", example = "202411")
                                             @RequestParam(required = false) String yearMonth) {
 
         String userInfo = (String) request.getAttribute("userInfo");
@@ -60,6 +64,7 @@ public class CalendarController {
     @Operation(summary = "면접 일정 삭제", description = "interviewDetailId에 해당하는 면접 일정 삭제")
     @DeleteMapping("/interviews")
     public ResponseEntity<?> deleteInterviewSchedule(HttpServletRequest request,
+                                                     @Parameter(description = "면접 일정 ID (필터링 조건)", example = "27e725b8-5816-4783-a4d0-7a19e7ae4f34")
                                                      @RequestParam String id){
 
         String extractedToken = (String) request.getAttribute("userInfo");
@@ -71,6 +76,7 @@ public class CalendarController {
     @Operation(summary = "면접 일정 수정", description = "interviewDetailId에 해당하는 면접 일정 수정")
     @PutMapping("/interviews")
     public ResponseEntity<?> putInterviewSchedule(HttpServletRequest request,
+                                                  @Parameter(description = "면접 일정 ID (필터링 조건)", example = "27e725b8-5816-4783-a4d0-7a19e7ae4f34")
                                                   @RequestParam String id,
                                                   @RequestBody PutInterviewDetailDTO putInterviewDetailDTO){
 
