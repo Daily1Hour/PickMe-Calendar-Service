@@ -33,11 +33,11 @@ public class CalendarController {
                                             @Parameter(description = "조회할 년/월 (yyyyMM 형식, 필터링 조건)", example = "202411")
                                             @RequestParam(required = false) String yearMonth) {
 
-        String userInfo = (String) request.getAttribute("userInfo");
+        String clientId = (String) request.getAttribute("clientId");
 
-        log.info("userInfo: " + userInfo);
+        log.info("clientId: " + clientId);
 
-        return calendarService.interviewsList(userInfo, interviewDetailId ,name, yearMonth);
+        return calendarService.interviewsList(clientId, interviewDetailId ,name, yearMonth);
     }
 
     // 면접 일정 추가
@@ -46,10 +46,10 @@ public class CalendarController {
     public ResponseEntity<?> createInterviewSchedule(HttpServletRequest request,
                                                      @RequestBody PostInterviewDetailDTO postInterviewDetailDto){
 
-        String extractedToken = (String) request.getAttribute("userInfo");
+        String clientId = (String) request.getAttribute("clientId");
 
         // 받아온 데이터를 DB에 저장 요청
-        boolean b = calendarService.registerInterviewSchedule(postInterviewDetailDto, extractedToken);
+        boolean b = calendarService.registerInterviewSchedule(postInterviewDetailDto, clientId);
 
         // 저장 성공 시 OK 반환
         if(b){
@@ -67,9 +67,9 @@ public class CalendarController {
                                                      @Parameter(description = "면접 일정 ID (필터링 조건)", example = "27e725b8-5816-4783-a4d0-7a19e7ae4f34")
                                                      @RequestParam String id){
 
-        String extractedToken = (String) request.getAttribute("userInfo");
+        String clientId = (String) request.getAttribute("clientId");
 
-        return calendarService.deleteInterviewSchedule(extractedToken, id);
+        return calendarService.deleteInterviewSchedule(clientId, id);
     }
 
     // 특정 면접 일정 수정
@@ -80,9 +80,9 @@ public class CalendarController {
                                                   @RequestParam String id,
                                                   @RequestBody PutInterviewDetailDTO putInterviewDetailDTO){
 
-        String extractedToken = (String) request.getAttribute("userInfo");
+        String clientId = (String) request.getAttribute("clientId");
 
-        return calendarService.putInterviewSchedule(extractedToken, id, putInterviewDetailDTO);
+        return calendarService.putInterviewSchedule(clientId, id, putInterviewDetailDTO);
     }
 
 }

@@ -27,18 +27,18 @@ public class CalendarService {
     private final CalendarMongoQueryProcessor calendarMongoQueryProcessor;
 
     // 해당 사용자의 면접 일정 전체 조회 레포지토리에 요청
-    public ResponseEntity<?> interviewsList(String userInfo, String interviewDetailId, String name, String yearMonth){
+    public ResponseEntity<?> interviewsList(String clientId, String interviewDetailId, String name, String yearMonth){
 
         // 사용자의 면접 일정이 존재하는지 확인
-        if (calendarRepository.existsByUserInfo(userInfo)){
+        if (calendarRepository.existsByClientId(clientId)){
             // 사용자의 면접 일정 전체를 Calendar 객체로 가져옴
-            Calendar calendar = calendarRepository.findByUserInfo(userInfo);
+            Calendar calendar = calendarRepository.findByClientId(clientId);
             // 주어진 조건(현재는 name)으로 필터링된 interviewDetails 리스트를 가져옴
             List<Calendar.InterviewDetails> interviewDetails = calendarMongoQueryProcessor.filterInterviewDetails(calendar, interviewDetailId, name, yearMonth);
 
             // 응답을 위한 GetCalendarDTO 객체 생성
             GetCalendarDTO getCalendarDTO = new GetCalendarDTO();
-            // Calendar 엔티티의 정보를 GetCalendarDTO로 매핑 (id, userInfo 등)
+            // Calendar 엔티티의 정보를 GetCalendarDTO로 매핑 (id, clientId 등)
             calendarMapper.calendarToGetCalendarDTO(calendar, getCalendarDTO);
 
             // interviewDetails 리스트를 GetInterviewDetailDTO 객체로 변환
@@ -54,18 +54,18 @@ public class CalendarService {
     }
 
     // 사용자의 면접 일정 추가
-    public boolean registerInterviewSchedule(PostInterviewDetailDTO postInterviewDetailDto, String token) {
+    public boolean registerInterviewSchedule(PostInterviewDetailDTO postInterviewDetailDto, String clientId) {
 
         Calendar calendar;
 
         // 사용자 면접 일정 정보가 존재하는 지 확인
-        if(calendarRepository.existsByUserInfo(token)){
+        if(calendarRepository.existsByClientId(clientId)){
             // 사용자의 면접 일정을 Calendar 객체로 가져옴
-            calendar = calendarRepository.findByUserInfo(token);
+            calendar = calendarRepository.findByClientId(clientId);
         } else {
             // 사용자의 면접 일정이 없다면 새로운 Calendar 객체 생성
             calendar = new Calendar();
-            calendar.setUserInfo(token); // 사용자 정보 설정
+            calendar.setClientId(clientId); // 사용자 정보 설정
             calendar.setInterviewDetails(new ArrayList<>()); // 빈 면접 일정 리스트 초기화
         }
 
@@ -84,11 +84,11 @@ public class CalendarService {
     }
 
     // 사용자의 면접 일정 삭제
-    public ResponseEntity<?> deleteInterviewSchedule(String userInfo, String id) {
+    public ResponseEntity<?> deleteInterviewSchedule(String clientId, String id) {
         // 사용자 면접 일정 정보가 존재하는 지 확인
-        if (calendarRepository.existsByUserInfo(userInfo)){
+        if (calendarRepository.existsByClientId(clientId)){
             // 사용자의 면접 일정을 Calendar 객체로 가져옴
-            Calendar calendar = calendarRepository.findByUserInfo(userInfo);
+            Calendar calendar = calendarRepository.findByClientId(clientId);
             boolean b = calendarMongoQueryProcessor.deleteInterview(calendar, id);
             if(b){
                 return ResponseEntity.status(HttpStatus.OK).body("삭제 성공");
@@ -102,11 +102,11 @@ public class CalendarService {
     }
 
     // 사용자의 면접 일정 수정
-    public ResponseEntity<?> putInterviewSchedule(String userInfo, String id, PutInterviewDetailDTO putInterviewDetailDTO) {
+    public ResponseEntity<?> putInterviewSchedule(String clientId, String id, PutInterviewDetailDTO putInterviewDetailDTO) {
         // 사용자 면접 일정 정보가 존재하는 지 확인
-        if (calendarRepository.existsByUserInfo(userInfo)){
+        if (calendarRepository.existsByClientId(clientId)){
             // 사용자의 면접 일정을 Calendar 객체로 가져옴
-            Calendar calendar = calendarRepository.findByUserInfo(userInfo);
+            Calendar calendar = calendarRepository.findByClientId(clientId);
             // 주어진 면접 일정 ID(id)에 해당하는 면접 일정을 가져옴
             Calendar.InterviewDetails interviewDetail = calendarMongoQueryProcessor.findInterviewDetail(calendar, id);
             if (interviewDetail != null){ // 면접 일정이 존재하는 경우

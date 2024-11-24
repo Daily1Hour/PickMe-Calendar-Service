@@ -7,6 +7,6 @@ import java.util.List;
 @Data
 public class GetCalendarDTO {
     private String id;
-    private String userInfo;
+    private String clientId;
     private List<GetInterviewDetailDTO> interviewDetails;
 }
