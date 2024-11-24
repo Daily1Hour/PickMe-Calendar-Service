@@ -1,12 +1,10 @@
 package com.pickme.calendar.service;
 
-import com.pickme.calendar.dto.InterviewScheduleDTO;
 import com.pickme.calendar.dto.get.GetCalendarDTO;
 import com.pickme.calendar.dto.get.GetInterviewDetailDTO;
 import com.pickme.calendar.dto.post.PostInterviewDetailDTO;
+import com.pickme.calendar.dto.put.PutInterviewDetailDTO;
 import com.pickme.calendar.entity.Calendar;
-import com.pickme.calendar.exception.CustomException;
-import com.pickme.calendar.exception.ErrorCode;
 import com.pickme.calendar.service.mapper.CalendarMapper;
 import com.pickme.calendar.repository.CalendarRepository;
 import com.pickme.calendar.repository.CalendarMongoQueryProcessor;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -105,18 +102,21 @@ public class CalendarService {
     }
 
     // 사용자의 면접 일정 수정
-    public ResponseEntity<?> putInterviewSchedule(String userInfo, String id, InterviewScheduleDTO interviewScheduleDto) {
-        Optional<Calendar> optionalCalendar = Optional.ofNullable(calendarRepository.findByUserInfoAndId(userInfo, id));
-        if(optionalCalendar.isEmpty()){
-            throw new CustomException(ErrorCode.DOCUMENT_NOT_FOUND, String.format("%s 님의 %s id에 해당하는 면접 일정은 없습니다.", userInfo,id));
+    public ResponseEntity<?> putInterviewSchedule(String userInfo, String id, PutInterviewDetailDTO putInterviewDetailDTO) {
+
+        if (calendarRepository.existsByUserInfo(userInfo)){
+            Calendar calendar = calendarRepository.findByUserInfo(userInfo);
+            Calendar.InterviewDetails interviewDetail = calendarMongoQueryProcessor.findInterviewDetail(calendar, id);
+            if (interviewDetail != null){
+                calendarMapper.putInterviewDetailDtoTOInterviewDetail(putInterviewDetailDTO, interviewDetail);
+                calendarRepository.save(calendar);
+                return ResponseEntity.status(HttpStatus.OK).body("수정 성공");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("id에 해당하는 면접 일정이 없습니다.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자 정보가 없습니다.");
         }
-
-        // calendarRepository.findByUserInfoAndId(userInfo, id)로 반환된 해당 일정을 가져옴
-        Calendar calendar = calendarRepository.findByUserInfoAndId(userInfo, id);
-
-        calendarMapper.toCalendarEntity(interviewScheduleDto, calendar);
-        calendarRepository.save(calendar);
-        return ResponseEntity.status(HttpStatus.OK).body(calendarMapper.toInterviewScheduleDto(calendar));
     }
 
 }
