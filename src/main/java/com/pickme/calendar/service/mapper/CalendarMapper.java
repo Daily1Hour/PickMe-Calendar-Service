@@ -18,7 +18,7 @@ public interface CalendarMapper {
     @Mapping(target = "interviewDetailId", ignore = true)
     void postInterviewDetailDtoToInterviewDetails (PostInterviewDetailDTO postInterviewDetailDto, @MappingTarget Calendar.InterviewDetails interviewDetails);
 
-    // Calendar 엔티티의 정보를 GetCalendarDTO로 매핑 (id, userInfo)
+    // Calendar 엔티티의 정보를 GetCalendarDTO로 매핑 (id, clientId)
     @Mapping(target = "interviewDetails", ignore = true)
     void calendarToGetCalendarDTO (Calendar calendar, @MappingTarget GetCalendarDTO getCalendarDTO);
 

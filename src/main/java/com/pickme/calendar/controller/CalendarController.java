@@ -65,11 +65,11 @@ public class CalendarController {
     @DeleteMapping("/interviews")
     public ResponseEntity<?> deleteInterviewSchedule(HttpServletRequest request,
                                                      @Parameter(description = "면접 일정 ID (필터링 조건)", example = "27e725b8-5816-4783-a4d0-7a19e7ae4f34")
-                                                     @RequestParam String id){
+                                                     @RequestParam String interviewDetailId){
 
         String clientId = (String) request.getAttribute("clientId");
 
-        return calendarService.deleteInterviewSchedule(clientId, id);
+        return calendarService.deleteInterviewSchedule(clientId, interviewDetailId);
     }
 
     // 특정 면접 일정 수정
@@ -77,12 +77,12 @@ public class CalendarController {
     @PutMapping("/interviews")
     public ResponseEntity<?> putInterviewSchedule(HttpServletRequest request,
                                                   @Parameter(description = "면접 일정 ID (필터링 조건)", example = "27e725b8-5816-4783-a4d0-7a19e7ae4f34")
-                                                  @RequestParam String id,
+                                                  @RequestParam String interviewDetailId,
                                                   @RequestBody PutInterviewDetailDTO putInterviewDetailDTO){
 
         String clientId = (String) request.getAttribute("clientId");
 
-        return calendarService.putInterviewSchedule(clientId, id, putInterviewDetailDTO);
+        return calendarService.putInterviewSchedule(clientId, interviewDetailId, putInterviewDetailDTO);
     }
 
 }
