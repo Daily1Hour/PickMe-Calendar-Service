@@ -46,10 +46,10 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
 
         // 토큰에서 사용자 정보를 추출
-        String userInfo = jwtService.extractToken(token);
+        String clientId = jwtService.extractToken(token);
 
         // HttpServletRequest에 사용자 정보를 속성으로 추가하여 컨트롤러에서 사용할 수 있게 함
-        request.setAttribute("userInfo", userInfo);
+        request.setAttribute("clientId", clientId);
 
         // 요청 처리를 계속 진행
         return true;

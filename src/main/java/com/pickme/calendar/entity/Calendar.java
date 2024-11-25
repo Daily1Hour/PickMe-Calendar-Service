@@ -16,13 +16,15 @@ public class Calendar {
     @Id
     private String id;
 
-    private String userInfo;
+    private String clientId;
 
     private List<InterviewDetails> interviewDetails;
 
     @Data
     @NoArgsConstructor
     public static class InterviewDetails{
+
+        private String interviewDetailId;
 
         private Company company;
 
