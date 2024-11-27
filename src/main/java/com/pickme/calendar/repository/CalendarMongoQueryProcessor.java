@@ -2,7 +2,6 @@ package com.pickme.calendar.repository;
 
 import com.pickme.calendar.entity.Calendar;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -12,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CalendarMongoQueryProcessor {
 
-    private final MongoTemplate mongoTemplate;
+    private final CalendarRepository calendarRepository;
 
     // 주어진 Calendar 객체에서 면접 일정 목록을 가져오는 메서드
     // 주어진 조건(interviewDetailId, name, yearMonth)이 null이 아니면 해당 조건과 일치하는 면접 일정만 필터링하여 반환
@@ -51,7 +50,7 @@ public class CalendarMongoQueryProcessor {
         // 해당 면접 일정이 존재하는 경우
         if(result != null){
             calendar.getInterviewDetails().remove(result); // 면접 일정 리스트에서 해당 항목 삭제
-            mongoTemplate.save(calendar); // 변경된 Calendar 객체를 MongoDB에 저장
+            calendarRepository.save(calendar); // 변경된 Calendar 객체를 MongoDB에 저장
             return true;
         } else { // 조건에 맞는 면접 일정이 없는 경우
             return false;

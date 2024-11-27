@@ -17,19 +17,20 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){ //
+
         /*
          * HttpServletRequest request:
          * - 클라이언트 요청 정보를 담고 있는 객체.
          * - 헤더(Header), 요청 파라미터(Parameter), URI 등의 데이터를 읽을 수 있음.
-         */
 
-        /*
+
+
          * HttpServletResponse response:
          * - 서버가 클라이언트에게 응답을 보낼 때 사용하는 객체.
          * - 응답 상태 코드, 헤더(Header), 본문(Body) 등을 설정할 수 있음.
-         */
 
-        /*
+
+
          * Object handler:
          * - 현재 요청을 처리할 핸들러(컨트롤러 메서드)에 대한 정보.
          * - 주로 디버깅이나 특정 조건에서 핸들러를 식별할 때 사용.
@@ -38,7 +39,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         // 클라이언트 요청 헤더에서 Authorization 정보를 가져옴
         String token = request.getHeader("Authorization");
-        // log.info(token + "토큰이에요");
+
         // Authorization 헤더가 없거나 Bearer 형식이 아니면 401(Unauthorized) 상태 코드를 반환하고 요청을 중단
         if(token == null || !token.startsWith("Bearer ")){
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 응답 상태를 401로 설정
