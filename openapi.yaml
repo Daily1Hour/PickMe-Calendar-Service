@@ -7,47 +7,65 @@ servers:
   description: Generated server url
 security:
 - BearerAuth: []
+tags:
+- name: Calendar
+  description: 면접 캘린더 API
 paths:
   /calendar/interviews:
     get:
       tags:
-      - calendar-controller
+      - Calendar
+      summary: 면접 일정 조회
+      description: 면접 일정 전체 조회 & 특정 조건에 해당하는 면접 일정 조회
       operationId: interviewsList
       parameters:
-      - name: Authorization
-        in: header
-        required: true
+      - name: interviewDetailId
+        in: query
+        description: 면접 일정 ID (필터링 조건)
+        required: false
         schema:
           type: string
+        example: 27e725b8-5816-4783-a4d0-7a19e7ae4f34
+      - name: name
+        in: query
+        description: 회사 이름 (필터링 조건)
+        required: false
+        schema:
+          type: string
+        example: 앙떼띠
+      - name: yearMonth
+        in: query
+        description: "조회할 년/월 (yyyyMM 형식, 필터링 조건)"
+        required: false
+        schema:
+          type: string
+        example: 202411
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Calendar"
+                type: object
     put:
       tags:
-      - calendar-controller
+      - Calendar
+      summary: 면접 일정 수정
+      description: interviewDetailId에 해당하는 면접 일정 수정
       operationId: putInterviewSchedule
       parameters:
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
-      - name: id
+      - name: interviewDetailId
         in: query
+        description: 면접 일정 ID (필터링 조건)
         required: true
         schema:
           type: string
+        example: 27e725b8-5816-4783-a4d0-7a19e7ae4f34
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/InterviewScheduleDto"
+              $ref: "#/components/schemas/PutInterviewDetailDTO"
         required: true
       responses:
         "200":
@@ -55,22 +73,18 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/InterviewScheduleDto"
+                type: object
     post:
       tags:
-      - calendar-controller
-      operationId: registerInterviewSchedule
-      parameters:
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
+      - Calendar
+      summary: 면접 일정 추가
+      description: 새로운 면접 일정 추가
+      operationId: createInterviewSchedule
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/InterviewScheduleDto"
+              $ref: "#/components/schemas/PostInterviewDetailDTO"
         required: true
       responses:
         "200":
@@ -78,121 +92,82 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/ResponseDto"
+                type: object
     delete:
       tags:
-      - calendar-controller
+      - Calendar
+      summary: 면접 일정 삭제
+      description: interviewDetailId에 해당하는 면접 일정 삭제
       operationId: deleteInterviewSchedule
       parameters:
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
-      - name: id
+      - name: interviewDetailId
         in: query
+        description: 면접 일정 ID (필터링 조건)
         required: true
         schema:
           type: string
+        example: 27e725b8-5816-4783-a4d0-7a19e7ae4f34
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/ResponseDto"
-  /calendar/interviews/byPeriod:
-    get:
-      tags:
-      - calendar-controller
-      operationId: interviewsListByPeriod
-      parameters:
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
-      - name: startDate
-        in: query
-        required: true
-        schema:
-          type: string
-          format: date-time
-      - name: endDate
-        in: query
-        required: true
-        schema:
-          type: string
-          format: date-time
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Calendar"
-  /calendar/interviews/byJob:
-    get:
-      tags:
-      - calendar-controller
-      operationId: interviewsListByJob
-      parameters:
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
-      - name: position
-        in: query
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Calendar"
+                type: object
 components:
   schemas:
-    InterviewScheduleDto:
+    PutCompanyDTO:
       type: object
       properties:
+        name:
+          type: string
+          example: 수정된 회사명
         location:
           type: string
-        companyName:
-          type: string
+          example: 수정된 회사 위치
+    PutInterviewDetailDTO:
+      type: object
+      properties:
+        company:
+          $ref: "#/components/schemas/PutCompanyDTO"
         interviewTime:
           type: string
           format: date-time
         position:
           type: string
-    ResponseDto:
+          example: 수정된 직무
+        category:
+          type: string
+          example: 수정된 면접 유형
+        description:
+          type: string
+          example: 수정된 사항
+    PostCompanyDTO:
       type: object
       properties:
-        message:
+        name:
           type: string
-    Calendar:
-      type: object
-      properties:
-        id:
-          type: string
-        userInfo:
-          type: string
+          example: 앙떼띠
         location:
           type: string
-        companyName:
-          type: string
+          example: 서울특별시 송파구 방이동 번지 1호 23-2 2층
+    PostInterviewDetailDTO:
+      type: object
+      properties:
+        company:
+          $ref: "#/components/schemas/PostCompanyDTO"
         interviewTime:
           type: string
           format: date-time
         position:
           type: string
+          example: 바리스타
+        category:
+          type: string
+          example: 1차 기술면접
+        description:
+          type: string
+          example: 면접 전 15분 전까지 도착하기
   securitySchemes:
     BearerAuth:
       type: http
