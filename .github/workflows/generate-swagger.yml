@@ -1,6 +1,7 @@
 name: Generate Swagger
 
 on:
+  workflow_dispatch: # 수동 실행
   push:
     tags: # 태그가 푸시될 때만 실행
       - "v*.*.*"
