@@ -14,6 +14,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      MONGODB_USERNAME: ${{secrets.MONGODB_USERNAME}}
+      MONGODB_PASSWORD: ${{secrets.MONGODB_PASSWORD}}
+      MONGODB_CLUSTER: ${{secrets.MONGODB_CLUSTER}}
+      MONGODB_DATABASE: ${{secrets.MONGODB_DATABASE}}
+      MONGODB_APPNAME: ${{secrets.MONGODB_APPNAME}}
+      
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
