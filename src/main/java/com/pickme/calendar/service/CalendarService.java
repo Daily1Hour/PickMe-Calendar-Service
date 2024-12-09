@@ -49,7 +49,7 @@ public class CalendarService {
             return ResponseEntity.status(HttpStatus.OK).body(getCalendarDTO);
 
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 조건의 사용자 면접 일정이 없습니다.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("해당 조건의 사용자 면접 일정이 없습니다.");
         }
     }
 
@@ -91,12 +91,12 @@ public class CalendarService {
             Calendar calendar = calendarRepository.findByClientId(clientId);
             boolean b = calendarMongoQueryProcessor.deleteInterview(calendar, interviewDetailId);
             if(b){
-                return ResponseEntity.status(HttpStatus.OK).body("삭제 성공");
+                return ResponseEntity.status(HttpStatus.OK).body("면접 일정 삭제 성공");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("interviewDetailId에 해당하는 면접 일정이 없습니다.");
             }
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자 정보가 없습니다.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("사용자 정보가 없습니다.");
         }
 
     }
@@ -114,12 +114,12 @@ public class CalendarService {
                 calendarMapper.putInterviewDetailDtoTOInterviewDetail(putInterviewDetailDTO, interviewDetail);
                 // 수정된 Calendar 객체를 데이터베이스에 저장
                 calendarRepository.save(calendar);
-                return ResponseEntity.status(HttpStatus.OK).body("수정 성공");
+                return ResponseEntity.status(HttpStatus.OK).body("면접 일정 수정 성공");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("interviewDetailId에 해당하는 면접 일정이 없습니다.");
             }
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자 정보가 없습니다.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("사용자 정보가 없습니다.");
         }
     }
 
