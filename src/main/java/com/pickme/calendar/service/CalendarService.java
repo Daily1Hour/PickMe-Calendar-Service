@@ -49,7 +49,7 @@ public class CalendarService {
             return ResponseEntity.status(HttpStatus.OK).body(getCalendarDTO);
 
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("해당 조건의 사용자 면접 일정이 없습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 조건의 사용자 면접 일정이 없습니다.");
         }
     }
 
@@ -96,7 +96,7 @@ public class CalendarService {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("interviewDetailId에 해당하는 면접 일정이 없습니다.");
             }
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("사용자 정보가 없습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자 정보가 없습니다.");
         }
 
     }
@@ -119,7 +119,7 @@ public class CalendarService {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("interviewDetailId에 해당하는 면접 일정이 없습니다.");
             }
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("사용자 정보가 없습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자 정보가 없습니다.");
         }
     }
 

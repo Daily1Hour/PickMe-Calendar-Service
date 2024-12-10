@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Calendar", description = "면접 캘린더 API")
 @ApiResponse(responseCode = "400", description = "잘못된 요청")
 @ApiResponse(responseCode = "401", description = "권한 없음")
-@ApiResponse(responseCode = "403", description = "clientId에 해당하는 면접 일정 정보가 없음")
-@ApiResponse(responseCode = "404", description = "interviewDetailId에 해당하는 면접 일정이 없음")
+@ApiResponse(responseCode = "404", description = "면접 일정이 없음")
 public class CalendarController {
 
     private final CalendarService calendarService;
