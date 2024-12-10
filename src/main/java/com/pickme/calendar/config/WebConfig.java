@@ -3,6 +3,7 @@ package com.pickme.calendar.config;
 import com.pickme.calendar.config.security.JwtInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -47,4 +48,14 @@ public class WebConfig implements WebMvcConfigurer {
          * - Swagger UI가 정상적으로 작동하려면 인증을 요구하지 않기 위해 이 경로를 제외.
          */
     }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*");
+
+    }
+
 }
