@@ -40,7 +40,7 @@ $ docker run --env-file .env -p 8080:8080 my-image:latest
 $ ./gradlew clean build -x test --no-daemon
 
 # 빌드된 JAR 파일을 실행
-$ java -jar calendar-0.0.1-SNAPSHOT.jar
+$ java -jar build/libs/calendar-0.0.1-SNAPSHOT.jar
 ```
 
 ## 🖧 배치 다이어그램
@@ -48,86 +48,87 @@ $ java -jar calendar-0.0.1-SNAPSHOT.jar
 
 ## 📂 폴더 구조
 
-> Layered Archictecture
+> Layered Architecture
 
 ```python
 calendar
- ┣ .devcontainer
- ┃ ┣ .dockerignore
- ┃ ┗ Dockerfile
- ┣ .github
- ┃ ┣ rulesets
- ┃ ┃ ┗ Main-Rule.json
- ┃ ┣ workflows
- ┃ ┃ ┣ auto-assign.yml
- ┃ ┃ ┣ generate-swagger.yml
- ┃ ┃ ┗ gradle-build.yml
- ┃ ┣ auto-assign-config.yml
- ┃ ┗ swagger-index.html
- ┣ src
- ┃ ┣ main
- ┃ ┃ ┣ java
- ┃ ┃ ┃ ┗ com
- ┃ ┃ ┃ ┃ ┗ pickme
- ┃ ┃ ┃ ┃ ┃ ┗ calendar
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ config
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ security
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ JwtInterceptor.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ MongodbConfig.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ SwaggerConfig.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ WebConfig.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ controller
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ CalendarController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ dto
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ get
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ GetCalendarDTO.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ GetCompanyDTO.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ GetInterviewDetailDTO.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ post
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ PostCompanyDTO.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ PostInterviewDetailDTO.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ put
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ PutCompanyDTO.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ PutInterviewDetailDTO.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ entity
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ Calendar.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ exception
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ CustomException.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ ErrorCode.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ GlobalExceptionHandler.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ repository
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ CalendarMongoQueryProcessor.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ CalendarRepository.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ service
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ mapper
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ CalendarMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ CalendarService.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ JwtService.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┗ CalendarApplication.java
- ┃ ┃ ┗ resources
- ┃ ┃ ┃ ┣ static
- ┃ ┃ ┃ ┣ templates
- ┃ ┃ ┃ ┣ application-mongodb.properties
- ┃ ┃ ┃ ┣ application-mysql.properties
- ┃ ┃ ┃ ┗ application.properties
- ┃ ┣ test
- ┃ ┃ ┗ java
- ┃ ┃ ┃ ┗ com
- ┃ ┃ ┃ ┃ ┗ pickme
- ┃ ┃ ┃ ┃ ┃ ┗ calendar
- ┃ ┃ ┃ ┃ ┃ ┃ ┗ CalendarApplicationTests.java
- ┃ ┗ .gitkeep
- ┣ .env
- ┣ .gitattributes
- ┣ .gitconfig
- ┣ .gitignore
- ┣ .gitmessage
- ┣ build.gradle
- ┣ Dockerfile
- ┣ gradlew
- ┣ gradlew.bat
- ┣ HELP.md
- ┣ settings.gradle
- ┣ setup.ps1
- ┗ setup.zsh
+├─ .devcontainer
+│  ├─ .dockerignore
+│  └─ Dockerfile
+├─ .gitattributes
+├─ .gitconfig
+├─ .github
+│  ├─ auto-assign-config.yml
+│  ├─ rulesets
+│  │  └─ Main-Rule.json
+│  ├─ swagger-index.html
+│  └─ workflows
+│     ├─ auto-assign.yml
+│     ├─ generate-swagger.yml
+│     └─ gradle-build.yml
+├─ .gitignore
+├─ .gitmessage
+├─ Dockerfile
+├─ gradle
+│  └─ wrapper
+│     ├─ gradle-wrapper.jar
+│     └─ gradle-wrapper.properties
+├─ gradlew
+├─ gradlew.bat
+├─ README.md
+├─ setup.ps1
+├─ setup.zsh
+└─ src
+   ├─ .gitkeep
+   ├─ main
+   │  ├─ java
+   │  │  └─ com
+   │  │     └─ pickme
+   │  │        └─ calendar
+   │  │           ├─ CalendarApplication.java
+   │  │           ├─ config
+   │  │           │  ├─ MongodbConfig.java
+   │  │           │  ├─ security
+   │  │           │  │  └─ JwtInterceptor.java
+   │  │           │  ├─ SwaggerConfig.java
+   │  │           │  └─ WebConfig.java
+   │  │           ├─ controller
+   │  │           │  └─ CalendarController.java
+   │  │           ├─ dto
+   │  │           │  ├─ get
+   │  │           │  │  ├─ GetCalendarDTO.java
+   │  │           │  │  ├─ GetCompanyDTO.java
+   │  │           │  │  └─ GetInterviewDetailDTO.java
+   │  │           │  ├─ post
+   │  │           │  │  ├─ PostCompanyDTO.java
+   │  │           │  │  └─ PostInterviewDetailDTO.java
+   │  │           │  └─ put
+   │  │           │     ├─ PutCompanyDTO.java
+   │  │           │     └─ PutInterviewDetailDTO.java
+   │  │           ├─ entity
+   │  │           │  └─ Calendar.java
+   │  │           ├─ exception
+   │  │           │  ├─ CustomException.java
+   │  │           │  ├─ ErrorCode.java
+   │  │           │  └─ GlobalExceptionHandler.java
+   │  │           ├─ repository
+   │  │           │  ├─ CalendarMongoQueryProcessor.java
+   │  │           │  └─ CalendarRepository.java
+   │  │           └─ service
+   │  │              ├─ CalendarService.java
+   │  │              ├─ JwtService.java
+   │  │              └─ mapper
+   │  │                 └─ CalendarMapper.java
+   │  └─ resources
+   │     ├─ application-mongodb.properties
+   │     ├─ application-mysql.properties
+   │     ├─ application.properties
+   │     ├─ static
+   │     └─ templates
+   └─ test
+      └─ java
+         └─ com
+            └─ pickme
+               └─ calendar
+                  └─ CalendarApplicationTests.java
 ```
