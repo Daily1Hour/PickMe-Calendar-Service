@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -27,7 +28,7 @@ public class CalendarService {
     private final CalendarMongoQueryProcessor calendarMongoQueryProcessor;
 
     // 해당 사용자의 면접 일정 전체 조회 레포지토리에 요청
-    public ResponseEntity<?> interviewsList(String clientId, String interviewDetailId, String name, String yearMonth){
+    public ResponseEntity<?> interviewsList(String clientId, String interviewDetailId, String name, YearMonth yearMonth){
 
         // 사용자의 면접 일정이 존재하는지 확인
         if (calendarRepository.existsByClientId(clientId)){
@@ -75,6 +76,7 @@ public class CalendarService {
         interviewDetails.setInterviewDetailId(UUID.randomUUID().toString());
         // 전달받은 DTO(PostInterviewDetailDTO)를 InterviewDetails 객체로 변환
         calendarMapper.postInterviewDetailDtoToInterviewDetails(postInterviewDetailDto, interviewDetails);
+        log.info(interviewDetails.getInterviewTime().toString());
         // 변환된 interviewDetails를 Calendar의 interviewDetails 리스트에 추가
         calendar.getInterviewDetails().add(interviewDetails);
         // 업데이트된 Calendar 객체를 데이터베이스에 저장

@@ -2,7 +2,7 @@ package com.pickme.calendar.dto.get;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 public class GetInterviewDetailDTO {
@@ -11,7 +11,7 @@ public class GetInterviewDetailDTO {
 
     private GetCompanyDTO company;
 
-    private LocalDateTime interviewTime;
+    private Date interviewTime;
 
     private String position;
 

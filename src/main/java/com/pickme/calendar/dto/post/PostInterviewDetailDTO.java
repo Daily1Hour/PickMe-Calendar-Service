@@ -1,16 +1,18 @@
 package com.pickme.calendar.dto.post;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 public class PostInterviewDetailDTO {
 
     private PostCompanyDTO company;
 
-    private LocalDateTime interviewTime;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+    private Date interviewTime;
 
     @Schema(example = "바리스타")
     private String position;
