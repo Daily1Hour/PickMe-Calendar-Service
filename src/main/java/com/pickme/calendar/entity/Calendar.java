@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Document(collection = "calendar")
@@ -28,7 +28,7 @@ public class Calendar {
 
         private Company company;
 
-        private LocalDateTime interviewTime;
+        private Date interviewTime;
 
         private String position;
 

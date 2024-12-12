@@ -10,9 +10,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.YearMonth;
 
 @RestController
 @RequestMapping("/calendar")
@@ -35,8 +38,8 @@ public class CalendarController {
                                             @RequestParam(required = false) String interviewDetailId,
                                             @Parameter(description = "회사 이름 (필터링 조건)", example = "앙떼띠")
                                             @RequestParam(required = false) String name,
-                                            @Parameter(description = "조회할 년/월 (yyyyMM 형식, 필터링 조건)", example = "202411")
-                                            @RequestParam(required = false) String yearMonth) {
+                                            @Parameter(description = "조회할 년/월 (yyyyMM 형식, 필터링 조건)", example = "2024-11")
+                                            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM") YearMonth yearMonth) {
 
         String clientId = (String) request.getAttribute("clientId");
 
