@@ -57,15 +57,7 @@ public class CalendarController {
 
         String clientId = (String) request.getAttribute("clientId");
 
-        // 받아온 데이터를 DB에 저장 요청
-        boolean b = calendarService.registerInterviewSchedule(postInterviewDetailDto, clientId);
-
-        // 저장 성공 시 OK 반환
-        if(b){
-            return ResponseEntity.status(HttpStatus.OK).body("면접 일정 추가 성공");
-        }
-        // 저장 실패 시 Fail 반환
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return calendarService.registerInterviewSchedule(postInterviewDetailDto, clientId);
 
     }
 

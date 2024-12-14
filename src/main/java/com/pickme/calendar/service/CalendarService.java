@@ -2,6 +2,7 @@ package com.pickme.calendar.service;
 
 import com.pickme.calendar.dto.get.GetCalendarDTO;
 import com.pickme.calendar.dto.get.GetInterviewDetailDTO;
+import com.pickme.calendar.dto.post.PostApiResponseDTO;
 import com.pickme.calendar.dto.post.PostInterviewDetailDTO;
 import com.pickme.calendar.dto.put.PutInterviewDetailDTO;
 import com.pickme.calendar.entity.Calendar;
@@ -55,7 +56,7 @@ public class CalendarService {
     }
 
     // 사용자의 면접 일정 추가
-    public boolean registerInterviewSchedule(PostInterviewDetailDTO postInterviewDetailDto, String clientId) {
+    public ResponseEntity<?> registerInterviewSchedule(PostInterviewDetailDTO postInterviewDetailDto, String clientId) {
 
         Calendar calendar;
 
@@ -81,8 +82,12 @@ public class CalendarService {
         calendar.getInterviewDetails().add(interviewDetails);
         // 업데이트된 Calendar 객체를 데이터베이스에 저장
         calendarRepository.save(calendar);
-        // 면접 일정 등록 완료 후 true 반환
-        return true;
+
+        PostApiResponseDTO postApiResponseDTO = new PostApiResponseDTO();
+        postApiResponseDTO.setSuccess("true");
+        postApiResponseDTO.setMessage("면접 일정 추가 성공");
+        postApiResponseDTO.setInterviewDetailId(interviewDetails.getInterviewDetailId());
+        return ResponseEntity.status(HttpStatus.OK).body(postApiResponseDTO);
     }
 
     // 사용자의 면접 일정 삭제
