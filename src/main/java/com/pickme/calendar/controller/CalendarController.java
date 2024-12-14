@@ -51,7 +51,7 @@ public class CalendarController {
     // 면접 일정 추가
     @Operation(summary = "면접 일정 추가", description = "새로운 면접 일정 추가")
     @ApiResponse(responseCode = "200", description = "면접 일정 추가 성공")
-    @PostMapping("/interviews")
+    @PostMapping("/interview")
     public ResponseEntity<?> createInterviewSchedule(HttpServletRequest request,
                                                      @RequestBody PostInterviewDetailDTO postInterviewDetailDto){
 
@@ -64,7 +64,7 @@ public class CalendarController {
     // 면접 일정 삭제
     @Operation(summary = "면접 일정 삭제", description = "interviewDetailId에 해당하는 면접 일정 삭제")
     @ApiResponse(responseCode = "200", description = "면접 일정 삭제 성공")
-    @DeleteMapping("/interviews")
+    @DeleteMapping("/interview")
     public ResponseEntity<?> deleteInterviewSchedule(HttpServletRequest request,
                                                      @Parameter(description = "면접 일정 ID (필터링 조건)", example = "27e725b8-5816-4783-a4d0-7a19e7ae4f34")
                                                      @RequestParam String interviewDetailId){
@@ -77,7 +77,7 @@ public class CalendarController {
     // 특정 면접 일정 수정
     @Operation(summary = "면접 일정 수정", description = "interviewDetailId에 해당하는 면접 일정 수정")
     @ApiResponse(responseCode = "200", description = "면접 일정 수정 성공")
-    @PutMapping("/interviews")
+    @PutMapping("/interview")
     public ResponseEntity<?> putInterviewSchedule(HttpServletRequest request,
                                                   @Parameter(description = "면접 일정 ID (필터링 조건)", example = "27e725b8-5816-4783-a4d0-7a19e7ae4f34")
                                                   @RequestParam String interviewDetailId,
