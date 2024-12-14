@@ -30,12 +30,10 @@ public class CalendarController {
     private final CalendarService calendarService;
 
     // 해당 사용자 면접 일정 전체 조회
-    @Operation(summary = "면접 일정 조회", description = "면접 일정 전체 조회 & 특정 조건에 해당하는 면접 일정 조회")
+    @Operation(summary = "면접 일정 전체&조건 조회", description = "면접 일정 전체 조회 & 특정 조건에 해당하는 면접 일정 조회")
     @ApiResponse(responseCode = "200", description = "조회 요청 성공")
     @GetMapping("/interviews")
     public ResponseEntity<?> interviewsList(HttpServletRequest request,
-                                            @Parameter(description = "면접 일정 ID (필터링 조건)", example = "27e725b8-5816-4783-a4d0-7a19e7ae4f34")
-                                            @RequestParam(required = false) String interviewDetailId,
                                             @Parameter(description = "회사 이름 (필터링 조건)", example = "앙떼띠")
                                             @RequestParam(required = false) String name,
                                             @Parameter(description = "조회할 년/월 (yyyyMM 형식, 필터링 조건)", example = "2024-11")
@@ -45,7 +43,7 @@ public class CalendarController {
 
         log.info("clientId: " + clientId);
 
-        return calendarService.interviewsList(clientId, interviewDetailId ,name, yearMonth);
+        return calendarService.interviewsList(clientId, name, yearMonth);
     }
 
     // 해당 사용자의 interviewDetailId에 해당하는 면접 일정 조회

@@ -32,14 +32,14 @@ public class CalendarService {
     private final CalendarMongoQueryProcessor calendarMongoQueryProcessor;
 
     // 해당 사용자의 필터 조건에 맞는 면접 일정 조회
-    public ResponseEntity<?> interviewsList(String clientId, String interviewDetailId, String name, YearMonth yearMonth){
+    public ResponseEntity<?> interviewsList(String clientId, String name, YearMonth yearMonth){
 
         // 사용자의 면접 일정이 존재하는지 확인
         if (calendarRepository.existsByClientId(clientId)){
             // 사용자의 면접 일정 전체를 Calendar 객체로 가져옴
             Calendar calendar = calendarRepository.findByClientId(clientId);
             // 주어진 조건(현재는 name)으로 필터링된 interviewDetails 리스트를 가져옴
-            List<Calendar.InterviewDetails> interviewDetails = calendarMongoQueryProcessor.filterInterviewDetails(calendar, interviewDetailId, name, yearMonth);
+            List<Calendar.InterviewDetails> interviewDetails = calendarMongoQueryProcessor.filterInterviewDetails(calendar, name, yearMonth);
 
             // 응답을 위한 GetCalendarDTO 객체 생성
             GetCalendarDTO getCalendarDTO = new GetCalendarDTO();
