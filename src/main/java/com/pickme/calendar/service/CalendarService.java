@@ -1,6 +1,7 @@
 package com.pickme.calendar.service;
 
 import com.pickme.calendar.dto.delete.DeleteApiResponseDTO;
+import com.pickme.calendar.dto.get.GetApiResponseDTO;
 import com.pickme.calendar.dto.get.GetCalendarDTO;
 import com.pickme.calendar.dto.get.GetInterviewDetailDTO;
 import com.pickme.calendar.dto.post.PostApiResponseDTO;
@@ -53,7 +54,7 @@ public class CalendarService {
             return ResponseEntity.status(HttpStatus.OK).body(getCalendarDTO);
 
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 조건의 사용자 면접 일정이 없습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GetApiResponseDTO("false","해당 조건의 사용자 면접 일정이 없습니다."));
         }
     }
 
@@ -80,11 +81,11 @@ public class CalendarService {
 
                 return ResponseEntity.status(HttpStatus.OK).body(getCalendarDTO);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("interviewDetailId에 해당하는 면접 일정이 없습니다.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GetApiResponseDTO("false", "interviewDetailId에 해당하는 면접 일정이 없습니다."));
             }
 
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 조건의 사용자 면접 일정이 없습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GetApiResponseDTO("false","해당 사용자 면접 일정이 없습니다."));
         }
     }
 
