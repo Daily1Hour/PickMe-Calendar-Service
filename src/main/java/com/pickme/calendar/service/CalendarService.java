@@ -77,12 +77,12 @@ public class CalendarService {
         interviewDetails.setInterviewDetailId(UUID.randomUUID().toString());
         // 전달받은 DTO(PostInterviewDetailDTO)를 InterviewDetails 객체로 변환
         calendarMapper.postInterviewDetailDtoToInterviewDetails(postInterviewDetailDto, interviewDetails);
-        log.info(interviewDetails.getInterviewTime().toString());
         // 변환된 interviewDetails를 Calendar의 interviewDetails 리스트에 추가
         calendar.getInterviewDetails().add(interviewDetails);
         // 업데이트된 Calendar 객체를 데이터베이스에 저장
         calendarRepository.save(calendar);
 
+        // 일정 추가 시 반환값 설정
         PostApiResponseDTO postApiResponseDTO = new PostApiResponseDTO();
         postApiResponseDTO.setSuccess("true");
         postApiResponseDTO.setMessage("면접 일정 추가 성공");

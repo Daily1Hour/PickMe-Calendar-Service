@@ -33,7 +33,7 @@ public class CalendarMongoQueryProcessor {
 
                         // interviewTime의 연도와 월 비교
                         LocalDateTime interviewTime = interviewDetail.getInterviewTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-                        log.info(interviewTime.toString());
+
                         return interviewTime.getYear() == year && interviewTime.getMonthValue() == month;
                     }
                     return true; // yearMonth가 없으면 필터링하지 않음
