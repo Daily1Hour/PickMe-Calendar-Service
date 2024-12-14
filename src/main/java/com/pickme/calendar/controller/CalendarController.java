@@ -48,6 +48,19 @@ public class CalendarController {
         return calendarService.interviewsList(clientId, interviewDetailId ,name, yearMonth);
     }
 
+    // 해당 사용자의 interviewDetailId에 해당하는 면접 일정 조회
+    @Operation(summary = "면접 일정 조회", description = "interviewDetailId에 해당하는 면접 일정 조회")
+    @ApiResponse(responseCode = "200", description = "조회 요청 성공")
+    @GetMapping("/interview")
+    public ResponseEntity<?> Interview(HttpServletRequest request,
+                                            @Parameter(description = "면접 일정 ID", example = "27e725b8-5816-4783-a4d0-7a19e7ae4f34")
+                                            @RequestParam String interviewDetailId){
+
+        String clientId = (String) request.getAttribute("clientId");
+
+        return calendarService.getInterview(clientId, interviewDetailId);
+    }
+
     // 면접 일정 추가
     @Operation(summary = "면접 일정 추가", description = "새로운 면접 일정 추가")
     @ApiResponse(responseCode = "200", description = "면접 일정 추가 성공")
