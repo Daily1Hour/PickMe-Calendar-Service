@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,13 +49,10 @@ public class CalendarController {
     @Operation(summary = "면접 일정 조회", description = "interviewDetailId에 해당하는 면접 일정 조회")
     @ApiResponse(responseCode = "200", description = "조회 요청 성공")
     @GetMapping("/interview")
-    public ResponseEntity<?> Interview(HttpServletRequest request,
-                                            @Parameter(description = "면접 일정 ID", example = "27e725b8-5816-4783-a4d0-7a19e7ae4f34")
-                                            @RequestParam String interviewDetailId){
+    public ResponseEntity<?> Interview(@Parameter(description = "면접 일정 ID", example = "27e725b8-5816-4783-a4d0-7a19e7ae4f34")
+                                       @RequestParam String interviewDetailId){
 
-        String clientId = (String) request.getAttribute("clientId");
-
-        return calendarService.getInterview(clientId, interviewDetailId);
+        return calendarService.getInterview(interviewDetailId);
     }
 
     // 면접 일정 추가
