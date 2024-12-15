@@ -3,6 +3,7 @@ package com.pickme.calendar.service;
 import com.pickme.calendar.dto.delete.DeleteApiResponseDTO;
 import com.pickme.calendar.dto.get.GetApiResponseDTO;
 import com.pickme.calendar.dto.get.GetCalendarDTO;
+import com.pickme.calendar.dto.get.GetInterviewDTO;
 import com.pickme.calendar.dto.get.GetInterviewDetailDTO;
 import com.pickme.calendar.dto.post.PostApiResponseDTO;
 import com.pickme.calendar.dto.post.PostInterviewDetailDTO;
@@ -60,14 +61,15 @@ public class CalendarService {
 
     // ]interviewDetailId에 해당하는 면접 일정 조회
     public ResponseEntity<?> getInterview(String interviewDetailId){
+        Calendar calendar = calendarRepository.findByInterviewDetails_interviewDetailId(interviewDetailId);
 
-        List<Calendar> calendars = calendarRepository.findAll();
         // interviewDetailId에 해당하는 일정 가져옴
-        Calendar.InterviewDetails interviewDetail = calendarMongoQueryProcessor.findInterviewDetailInCalendars(calendars, interviewDetailId);
+        Calendar.InterviewDetails interviewDetail = calendarMongoQueryProcessor.findInterviewDetail(calendar, interviewDetailId);
 
         if (interviewDetail != null) {
-            GetInterviewDetailDTO getInterviewDetailDTO = calendarMapper.interviewDetailToGetInterviewDetailDTO(interviewDetail);
-            return ResponseEntity.status(HttpStatus.OK).body(getInterviewDetailDTO);
+            GetInterviewDTO getInterviewDTO = calendarMapper.interviewDetailToGetInterviewDTO(interviewDetail);
+            getInterviewDTO.setClientId(calendar.getClientId());
+            return ResponseEntity.status(HttpStatus.OK).body(getInterviewDTO);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GetApiResponseDTO("false", "interviewDetailId에 해당하는 면접 일정이 없습니다."));
         }

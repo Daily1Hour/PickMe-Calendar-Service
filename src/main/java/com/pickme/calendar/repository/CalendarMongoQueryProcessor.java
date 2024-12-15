@@ -49,17 +49,6 @@ public class CalendarMongoQueryProcessor {
                 .orElse(null); // 결과가 없으면 null 반환
     }
 
-    // 위랑 동일 목적의 코드인데 추후 하나의 함수로 합칠 것 같긴 한데 일단 분리 해놨음...
-    // 위는 단일 도큐먼트 아래는 전체 도큐먼트
-    public Calendar.InterviewDetails findInterviewDetailInCalendars(List<Calendar> calendars, String interviewDetailId) {
-        // 모든 Calendar 객체를 순회하며 interviewDetails에서 주어진 interviewDetailId를 찾음
-        return calendars.stream()
-                .flatMap(calendar -> calendar.getInterviewDetails().stream()) // 모든 Calendar의 interviewDetails를 하나의 스트림으로 연결
-                .filter(interviewDetails -> interviewDetails.getInterviewDetailId().equals(interviewDetailId)) // 조건에 맞는 일정 필터링
-                .findFirst() // 첫 번째 요소를 Optional로 반환
-                .orElse(null); // 결과가 없으면 null 반환
-    }
-
     // 주어진 Calendar 객체에서 특정 면접 일정(interviewDetailId)을 삭제하는 메서드.
     public boolean deleteInterview (Calendar calendar, String interviewDetailId){
         // 스트림을 사용하여 주어진 interviewDetailId에 해당하는 면접 일정을 찾음
