@@ -13,4 +13,6 @@ public interface CalendarRepository extends MongoRepository<Calendar, String> {
     // 해당 사용자 면접 일정 정보 추출
     Calendar findByClientId(String clientId);
 
+    Calendar findByInterviewDetails_interviewDetailId(String interviewDetailId);
+
 }
