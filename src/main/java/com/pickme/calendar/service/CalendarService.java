@@ -58,34 +58,18 @@ public class CalendarService {
         }
     }
 
-    // 해당 사용자의 interviewDetailId에 해당하는 면접 일정 조회
-    public ResponseEntity<?> getInterview(String clientId, String interviewDetailId){
+    // ]interviewDetailId에 해당하는 면접 일정 조회
+    public ResponseEntity<?> getInterview(String interviewDetailId){
 
-        // 사용자의 면접 일정이 존재하는지 확인
-        if (calendarRepository.existsByClientId(clientId)){
-            // 사용자의 면접 일정 전체를 Calendar 객체로 가져옴
-            Calendar calendar = calendarRepository.findByClientId(clientId);
-            // 주어진 조건(현재는 name)으로 필터링된 interviewDetails 리스트를 가져옴
-            Calendar.InterviewDetails interviewDetail = calendarMongoQueryProcessor.findInterviewDetail(calendar, interviewDetailId);
-            if (interviewDetail != null) {
-                // 응답을 위한 GetCalendarDTO 객체 생성
-                GetCalendarDTO getCalendarDTO = new GetCalendarDTO();
-                // Calendar 엔티티의 정보를 GetCalendarDTO로 매핑 (id, clientId 등)
-                calendarMapper.calendarToGetCalendarDTO(calendar, getCalendarDTO);
+        List<Calendar> calendars = calendarRepository.findAll();
+        // interviewDetailId에 해당하는 일정 가져옴
+        Calendar.InterviewDetails interviewDetail = calendarMongoQueryProcessor.findInterviewDetailInCalendars(calendars, interviewDetailId);
 
-                getCalendarDTO.setInterviewDetails(new ArrayList<>());
-
-                GetInterviewDetailDTO getInterviewDetailDTO = calendarMapper.interviewDetailToGetInterviewDetailDTO(interviewDetail);
-
-                getCalendarDTO.getInterviewDetails().add(getInterviewDetailDTO);
-
-                return ResponseEntity.status(HttpStatus.OK).body(getCalendarDTO);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GetApiResponseDTO("false", "interviewDetailId에 해당하는 면접 일정이 없습니다."));
-            }
-
+        if (interviewDetail != null) {
+            GetInterviewDetailDTO getInterviewDetailDTO = calendarMapper.interviewDetailToGetInterviewDetailDTO(interviewDetail);
+            return ResponseEntity.status(HttpStatus.OK).body(getInterviewDetailDTO);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GetApiResponseDTO("false","해당 사용자 면접 일정이 없습니다."));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GetApiResponseDTO("false", "interviewDetailId에 해당하는 면접 일정이 없습니다."));
         }
     }
 
