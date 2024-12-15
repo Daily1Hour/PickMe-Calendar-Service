@@ -1,6 +1,7 @@
 package com.pickme.calendar.service.mapper;
 
 import com.pickme.calendar.dto.get.GetCalendarDTO;
+import com.pickme.calendar.dto.get.GetInterviewDTO;
 import com.pickme.calendar.dto.get.GetInterviewDetailDTO;
 import com.pickme.calendar.dto.post.PostInterviewDetailDTO;
 import com.pickme.calendar.dto.put.PutInterviewDetailDTO;
@@ -24,6 +25,9 @@ public interface CalendarMapper {
 
     // interviewDetails 리스트를 GetInterviewDetailDTO 객체로 변환
     List<GetInterviewDetailDTO> interviewDetailsToGetInterviewDetailsDTO (List<Calendar.InterviewDetails> interviewDetails);
+
+    // interviewDetail을 GetInterviewDTO 객체로 변환
+    GetInterviewDTO interviewDetailToGetInterviewDTO(Calendar.InterviewDetails interviewDetail);
 
     // 전달받은 DTO(PutInterviewDetailDTO)를 InterviewDetails 객체로 변환
     @Mapping(target = "interviewDetailId", ignore = true)
