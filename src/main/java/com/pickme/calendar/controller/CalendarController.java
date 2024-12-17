@@ -1,5 +1,6 @@
 package com.pickme.calendar.controller;
 
+import com.pickme.calendar.dto.delete.DeleteApiResponseDTO;
 import com.pickme.calendar.dto.get.GetCalendarDTO;
 import com.pickme.calendar.dto.get.GetInterviewDTO;
 import com.pickme.calendar.dto.post.PostApiResponseDTO;
@@ -75,7 +76,7 @@ public class CalendarController {
 
     // 면접 일정 삭제
     @Operation(summary = "면접 일정 삭제", description = "interviewDetailId에 해당하는 면접 일정 삭제")
-    @ApiResponse(responseCode = "200", description = "면접 일정 삭제 성공")
+    @ApiResponse(responseCode = "200", description = "면접 일정 삭제 성공", content = @Content(schema = @Schema(implementation = DeleteApiResponseDTO.class)))
     @DeleteMapping("/interview")
     public ResponseEntity<?> deleteInterviewSchedule(@Parameter(description = "면접 일정 ID (필터링 조건)", example = "27e725b8-5816-4783-a4d0-7a19e7ae4f34")
                                                      @RequestParam String interviewDetailId){
