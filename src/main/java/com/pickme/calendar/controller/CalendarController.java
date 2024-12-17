@@ -2,6 +2,7 @@ package com.pickme.calendar.controller;
 
 import com.pickme.calendar.dto.get.GetCalendarDTO;
 import com.pickme.calendar.dto.get.GetInterviewDTO;
+import com.pickme.calendar.dto.post.PostApiResponseDTO;
 import com.pickme.calendar.dto.post.PostInterviewDetailDTO;
 import com.pickme.calendar.dto.put.PutInterviewDetailDTO;
 import com.pickme.calendar.service.CalendarService;
@@ -61,7 +62,7 @@ public class CalendarController {
 
     // 면접 일정 추가
     @Operation(summary = "면접 일정 추가", description = "새로운 면접 일정 추가")
-    @ApiResponse(responseCode = "200", description = "면접 일정 추가 성공")
+    @ApiResponse(responseCode = "200", description = "면접 일정 추가 성공", content = @Content(schema = @Schema(implementation = PostApiResponseDTO.class)))
     @PostMapping("/interview")
     public ResponseEntity<?> createInterviewSchedule(HttpServletRequest request,
                                                      @RequestBody PostInterviewDetailDTO postInterviewDetailDto){
