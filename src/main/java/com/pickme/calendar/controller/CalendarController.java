@@ -1,10 +1,14 @@
 package com.pickme.calendar.controller;
 
+import com.pickme.calendar.dto.get.GetCalendarDTO;
+import com.pickme.calendar.dto.get.GetInterviewDTO;
 import com.pickme.calendar.dto.post.PostInterviewDetailDTO;
 import com.pickme.calendar.dto.put.PutInterviewDetailDTO;
 import com.pickme.calendar.service.CalendarService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,7 +34,7 @@ public class CalendarController {
 
     // 해당 사용자 면접 일정 전체 조회
     @Operation(summary = "면접 일정 전체&조건 조회", description = "면접 일정 전체 조회 & 특정 조건에 해당하는 면접 일정 조회")
-    @ApiResponse(responseCode = "200", description = "조회 요청 성공")
+    @ApiResponse(responseCode = "200", description = "조회 요청 성공", content = @Content(schema = @Schema(implementation = GetCalendarDTO.class)))
     @GetMapping("/interviews")
     public ResponseEntity<?> interviewsList(HttpServletRequest request,
                                             @Parameter(description = "회사 이름 (필터링 조건)", example = "앙떼띠")
@@ -47,7 +51,7 @@ public class CalendarController {
 
     // 해당 사용자의 interviewDetailId에 해당하는 면접 일정 조회
     @Operation(summary = "면접 일정 조회", description = "interviewDetailId에 해당하는 면접 일정 조회")
-    @ApiResponse(responseCode = "200", description = "조회 요청 성공")
+    @ApiResponse(responseCode = "200", description = "조회 요청 성공", content = @Content(schema = @Schema(implementation = GetInterviewDTO.class)))
     @GetMapping("/interview")
     public ResponseEntity<?> Interview(@Parameter(description = "면접 일정 ID", example = "27e725b8-5816-4783-a4d0-7a19e7ae4f34")
                                        @RequestParam String interviewDetailId){
