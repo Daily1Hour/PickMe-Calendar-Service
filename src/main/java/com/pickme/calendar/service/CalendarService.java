@@ -129,24 +129,38 @@ public class CalendarService {
     }
 
     // 사용자의 면접 일정 수정
-    public ResponseEntity<?> putInterviewSchedule(String clientId, String interviewDetailId, PutInterviewDetailDTO putInterviewDetailDTO) {
-        // 사용자 면접 일정 정보가 존재하는 지 확인
-        if (calendarRepository.existsByClientId(clientId)){
-            // 사용자의 면접 일정을 Calendar 객체로 가져옴
-            Calendar calendar = calendarRepository.findByClientId(clientId);
-            // 주어진 면접 일정 ID(id)에 해당하는 면접 일정을 가져옴
-            Calendar.InterviewDetails interviewDetail = calendarMongoQueryProcessor.findInterviewDetail(calendar, interviewDetailId);
-            if (interviewDetail != null){ // 면접 일정이 존재하는 경우
+    public ResponseEntity<?> putInterviewSchedule(String interviewDetailId, PutInterviewDetailDTO putInterviewDetailDTO) {
+//        // 사용자 면접 일정 정보가 존재하는 지 확인
+//        if (calendarRepository.existsByClientId(clientId)){
+//            // 사용자의 면접 일정을 Calendar 객체로 가져옴
+//            Calendar calendar = calendarRepository.findByClientId(clientId);
+//            // 주어진 면접 일정 ID(id)에 해당하는 면접 일정을 가져옴
+//            Calendar.InterviewDetails interviewDetail = calendarMongoQueryProcessor.findInterviewDetail(calendar, interviewDetailId);
+//            if (interviewDetail != null){ // 면접 일정이 존재하는 경우
+//                // 수정할 데이터를 받아온 DTO를 면접 일정 객체에 매핑하여 수정
+//                calendarMapper.putInterviewDetailDtoTOInterviewDetail(putInterviewDetailDTO, interviewDetail);
+//                // 수정된 Calendar 객체를 데이터베이스에 저장
+//                calendarRepository.save(calendar);
+//                return ResponseEntity.status(HttpStatus.OK).body(new PutApiResponseDTO("true", "면접 일정 수정 성공"));
+//            } else {
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new PutApiResponseDTO("false", "interviewDetailId에 해당하는 면접 일정이 없습니다."));
+//            }
+//        } else {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new PutApiResponseDTO("false", "사용자 정보가 없습니다."));
+//        }
+
+        Calendar calendar = calendarRepository.findByInterviewDetails_interviewDetailId(interviewDetailId);
+
+        Calendar.InterviewDetails interviewDetail = calendarMongoQueryProcessor.findInterviewDetail(calendar, interviewDetailId);
+
+        if (interviewDetail != null){ // 면접 일정이 존재하는 경우
                 // 수정할 데이터를 받아온 DTO를 면접 일정 객체에 매핑하여 수정
                 calendarMapper.putInterviewDetailDtoTOInterviewDetail(putInterviewDetailDTO, interviewDetail);
                 // 수정된 Calendar 객체를 데이터베이스에 저장
                 calendarRepository.save(calendar);
                 return ResponseEntity.status(HttpStatus.OK).body(new PutApiResponseDTO("true", "면접 일정 수정 성공"));
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new PutApiResponseDTO("false", "interviewDetailId에 해당하는 면접 일정이 없습니다."));
-            }
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new PutApiResponseDTO("false", "사용자 정보가 없습니다."));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new PutApiResponseDTO("false", "interviewDetailId에 해당하는 면접 일정이 없습니다."));
         }
     }
 
