@@ -72,13 +72,10 @@ public class CalendarController {
     @Operation(summary = "면접 일정 삭제", description = "interviewDetailId에 해당하는 면접 일정 삭제")
     @ApiResponse(responseCode = "200", description = "면접 일정 삭제 성공")
     @DeleteMapping("/interview")
-    public ResponseEntity<?> deleteInterviewSchedule(HttpServletRequest request,
-                                                     @Parameter(description = "면접 일정 ID (필터링 조건)", example = "27e725b8-5816-4783-a4d0-7a19e7ae4f34")
+    public ResponseEntity<?> deleteInterviewSchedule(@Parameter(description = "면접 일정 ID (필터링 조건)", example = "27e725b8-5816-4783-a4d0-7a19e7ae4f34")
                                                      @RequestParam String interviewDetailId){
 
-        String clientId = (String) request.getAttribute("clientId");
-
-        return calendarService.deleteInterviewSchedule(clientId, interviewDetailId);
+        return calendarService.deleteInterviewSchedule(interviewDetailId);
     }
 
     // 특정 면접 일정 수정
