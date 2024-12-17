@@ -5,6 +5,7 @@ import com.pickme.calendar.dto.get.GetCalendarDTO;
 import com.pickme.calendar.dto.get.GetInterviewDTO;
 import com.pickme.calendar.dto.post.PostApiResponseDTO;
 import com.pickme.calendar.dto.post.PostInterviewDetailDTO;
+import com.pickme.calendar.dto.put.PutApiResponseDTO;
 import com.pickme.calendar.dto.put.PutInterviewDetailDTO;
 import com.pickme.calendar.service.CalendarService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -86,7 +87,7 @@ public class CalendarController {
 
     // 특정 면접 일정 수정
     @Operation(summary = "면접 일정 수정", description = "interviewDetailId에 해당하는 면접 일정 수정")
-    @ApiResponse(responseCode = "200", description = "면접 일정 수정 성공")
+    @ApiResponse(responseCode = "200", description = "면접 일정 수정 성공", content = @Content(schema = @Schema(implementation = PutApiResponseDTO.class)))
     @PutMapping("/interview")
     public ResponseEntity<?> putInterviewSchedule(@Parameter(description = "면접 일정 ID (필터링 조건)", example = "27e725b8-5816-4783-a4d0-7a19e7ae4f34")
                                                   @RequestParam String interviewDetailId,
