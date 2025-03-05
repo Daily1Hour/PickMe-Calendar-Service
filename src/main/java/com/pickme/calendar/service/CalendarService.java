@@ -63,6 +63,9 @@ public class CalendarService {
     // ]interviewDetailId에 해당하는 면접 일정 조회
     public ResponseEntity<?> getInterview(String interviewDetailId){
         Calendar calendar = calendarRepository.findByInterviewDetails_interviewDetailId(interviewDetailId);
+        if(calendar == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GetApiResponseDTO("false", "interviewDetailId에 해당하는 면접 일정이 없습니다."));
+        }
 
         // interviewDetailId에 해당하는 일정 가져옴
         Calendar.InterviewDetails interviewDetail = calendarMongoQueryProcessor.findInterviewDetail(calendar, interviewDetailId);
