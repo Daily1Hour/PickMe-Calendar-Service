@@ -143,9 +143,9 @@ public class CalendarService {
                 interviewDetail.setUpdatedAt(LocalDateTime.now());
                 // 수정된 Calendar 객체를 데이터베이스에 저장
                 calendarRepository.save(calendar);
-                return ResponseEntity.status(HttpStatus.OK).body(new PutApiResponseDTO("true", "면접 일정 수정 성공"));
+                return ResponseEntity.status(HttpStatus.OK).body(new PutApiResponseDTO("true", "면접 일정 수정 성공", interviewDetail.getInterviewDetailId()));
         } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new PutApiResponseDTO("false", "interviewDetailId에 해당하는 면접 일정이 없습니다."));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new PutApiResponseDTO("false", "interviewDetailId에 해당하는 면접 일정이 없습니다.", ""));
         }
     }
 
