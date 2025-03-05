@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +28,10 @@ public class Calendar {
     public static class InterviewDetails{
         @Indexed
         private String interviewDetailId;
+
+        private LocalDateTime createdAt;
+
+        private LocalDateTime updatedAt;
 
         private Company company;
 
