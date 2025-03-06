@@ -41,7 +41,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
 
         // Post 요청(면접 일정 생성 추가) 시 에만 토큰 인터셉트 후 검사
-        if ("POST".equalsIgnoreCase(request.getMethod())) {
+        if ("POST".equalsIgnoreCase(request.getMethod()) || ("GET".equalsIgnoreCase(request.getMethod()) && request.getRequestURI().equals("/calendar/interviews"))) {
             // 클라이언트 요청 헤더에서 Authorization 정보를 가져옴
             String token = request.getHeader("Authorization");
             // log.info(token + "토큰이에요");

@@ -3,6 +3,7 @@ package com.pickme.calendar.dto.get;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -12,6 +13,12 @@ public class GetInterviewDTO {
     private String clientId;
     @Schema(description = "interviewDetailId", example = "fd3c55f5-07fe-4d0c-94d3-69cbaeb2646c")
     private String interviewDetailId;
+
+    @Schema(description = "createdAt", example = "2025-03-05T13:43:35.901")
+    private LocalDateTime createdAt;
+
+    @Schema(description = "updatedAt", example = "2025-03-05T13:43:35.901")
+    private LocalDateTime updatedAt;
 
     private GetCompanyDTO company;
     @Schema(description = "interviewTime", example = "2024-12-01T02:49:03.465+00:00")

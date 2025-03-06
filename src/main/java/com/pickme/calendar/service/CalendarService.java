@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,9 @@ public class CalendarService {
     // ]interviewDetailId에 해당하는 면접 일정 조회
     public ResponseEntity<?> getInterview(String interviewDetailId){
         Calendar calendar = calendarRepository.findByInterviewDetails_interviewDetailId(interviewDetailId);
+        if(calendar == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GetApiResponseDTO("false", "interviewDetailId에 해당하는 면접 일정이 없습니다."));
+        }
 
         // interviewDetailId에 해당하는 일정 가져옴
         Calendar.InterviewDetails interviewDetail = calendarMongoQueryProcessor.findInterviewDetail(calendar, interviewDetailId);
@@ -95,6 +99,11 @@ public class CalendarService {
         Calendar.InterviewDetails interviewDetails = new Calendar.InterviewDetails();
         // InterviesDetails 객체의 interviewDetailId 값 설정
         interviewDetails.setInterviewDetailId(UUID.randomUUID().toString());
+
+        interviewDetails.setCreatedAt(LocalDateTime.now());
+
+        interviewDetails.setUpdatedAt(LocalDateTime.now());
+
         // 전달받은 DTO(PostInterviewDetailDTO)를 InterviewDetails 객체로 변환
         calendarMapper.postInterviewDetailDtoToInterviewDetails(postInterviewDetailDto, interviewDetails);
         // 변환된 interviewDetails를 Calendar의 interviewDetails 리스트에 추가
@@ -134,11 +143,12 @@ public class CalendarService {
         if (interviewDetail != null){ // 면접 일정이 존재하는 경우
                 // 수정할 데이터를 받아온 DTO를 면접 일정 객체에 매핑하여 수정
                 calendarMapper.putInterviewDetailDtoTOInterviewDetail(putInterviewDetailDTO, interviewDetail);
+                interviewDetail.setUpdatedAt(LocalDateTime.now());
                 // 수정된 Calendar 객체를 데이터베이스에 저장
                 calendarRepository.save(calendar);
-                return ResponseEntity.status(HttpStatus.OK).body(new PutApiResponseDTO("true", "면접 일정 수정 성공"));
+                return ResponseEntity.status(HttpStatus.OK).body(new PutApiResponseDTO("true", "면접 일정 수정 성공", interviewDetail.getInterviewDetailId()));
         } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new PutApiResponseDTO("false", "interviewDetailId에 해당하는 면접 일정이 없습니다."));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new PutApiResponseDTO("false", "interviewDetailId에 해당하는 면접 일정이 없습니다.", ""));
         }
     }
 
